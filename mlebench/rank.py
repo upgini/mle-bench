@@ -1,4 +1,3 @@
-import argparse
 import json
 import re
 from logging import Logger
@@ -7,7 +6,9 @@ from typing import List, Tuple
 
 import pandas as pd
 
-from mlebench.utils import get_logger, get_repo_dir, read_csv
+from mlebench.utils import get_logger, read_csv
+
+logger = get_logger(__name__)
 
 
 def _safe_path_component(value: str) -> str:
@@ -47,14 +48,24 @@ def load_competitions(
         return []
 
     competition_categories["category"] = competition_categories["category"].astype(str).str.strip()
-    category_filter = competition_categories["category"].str.casefold() == competition_category.strip().casefold()
-    category_competitions = set(competition_categories.loc[category_filter, "competition_id"].dropna().astype(str))
+    category_filter = (
+        competition_categories["category"].str.casefold() == competition_category.strip().casefold()
+    )
+    category_competitions = set(
+        competition_categories.loc[category_filter, "competition_id"].dropna().astype(str)
+    )
 
     if len(category_competitions) == 0:
-        logger.error(f"No competitions found with category '{competition_category}' in {competition_categories_path}")
+        logger.error(
+            f"No competitions found with category '{competition_category}' in {competition_categories_path}"
+        )
         return []
 
-    competitions = [competition_id for competition_id in split_competitions if competition_id in category_competitions]
+    competitions = [
+        competition_id
+        for competition_id in split_competitions
+        if competition_id in category_competitions
+    ]
 
     if len(competitions) == 0:
         logger.warning(
@@ -121,7 +132,7 @@ def get_competition_results(
     return results_df, is_lower_better
 
 
-def main(
+def collect_rankings(
     run_group_experiments_path: Path,
     runs_dir: Path,
     splits_dir: Path,
@@ -130,7 +141,6 @@ def main(
     competition_category: str,
     experiment_agents_path: Path,
     output_dir: Path,
-    logger: Logger,
 ):
     # Load competitions from configured split and category
     competitions = load_competitions(
@@ -169,7 +179,9 @@ def main(
 
     for competition_id in competitions:
         logger.info(f"Processing competition: {competition_id}")
-        results_df, is_lower_better = get_competition_results(competition_id, runs_dir, experiment_groups, logger)
+        results_df, is_lower_better = get_competition_results(
+            competition_id, runs_dir, experiment_groups, logger
+        )
 
         if results_df is None or len(results_df) == 0:
             logger.warning(f"No results for {competition_id}")
@@ -183,7 +195,9 @@ def main(
             continue
 
         stats_df = (
-            results_df.groupby("experiment_id", group_keys=True)["score"].agg(["mean", "std", "count"]).reset_index()
+            results_df.groupby("experiment_id", group_keys=True)["score"]
+            .agg(["mean", "std", "count"])
+            .reset_index()
         )
         stats_df.columns = ["experiment_id", "mean_score", "std_score", "n_runs"]
         stats_df["rank"] = stats_df["mean_score"].rank(
@@ -219,93 +233,3 @@ def main(
     final_output = base_output_dir / "overall_ranks.csv"
     final_results.to_csv(final_output, index=False)
     logger.info(f"Saved final mean ranks to {final_output}")
-
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description="Collect mean score ranks for each experiment_id across scores on tabular datasets"
-    )
-
-    parser.add_argument(
-        "--run-group-experiments",
-        type=str,
-        help="Path to run_group_experiments.csv file",
-        default=None,
-    )
-    parser.add_argument(
-        "--runs-dir",
-        type=str,
-        help="Path to runs directory",
-        default=None,
-    )
-    parser.add_argument(
-        "--splits-dir",
-        type=str,
-        help="Path to experiments splits directory",
-        default=None,
-    )
-    parser.add_argument(
-        "--competition-categories",
-        type=str,
-        help="Path to competition_categories.csv file",
-        default=None,
-    )
-    parser.add_argument(
-        "--split-type",
-        type=str,
-        help="Competition split to evaluate (e.g., low, medium, high)",
-        default="low",
-    )
-    parser.add_argument(
-        "--competition-category",
-        type=str,
-        help="Competition category to filter (e.g., Tabular)",
-        default="Tabular",
-    )
-    parser.add_argument(
-        "--experiment-agents",
-        type=str,
-        help="Path to experiment_agents.csv file",
-        default=None,
-    )
-    parser.add_argument(
-        "--output-dir",
-        type=str,
-        help="Path to output directory",
-        default=None,
-    )
-
-    args = parser.parse_args()
-    logger = get_logger(__name__)
-
-    repo_dir = get_repo_dir()
-
-    # Set default paths relative to repo root
-    run_group_experiments_path = (
-        Path(args.run_group_experiments)
-        if args.run_group_experiments
-        else repo_dir / "runs" / "run_group_experiments.csv"
-    )
-    runs_dir = Path(args.runs_dir) if args.runs_dir else repo_dir / "runs"
-    splits_dir = Path(args.splits_dir) if args.splits_dir else repo_dir / "experiments" / "splits"
-    competition_categories_path = (
-        Path(args.competition_categories)
-        if args.competition_categories
-        else repo_dir / "experiments" / "competition_categories.csv"
-    )
-    experiment_agents_path = (
-        Path(args.experiment_agents) if args.experiment_agents else repo_dir / "runs" / "experiment_agents.csv"
-    )
-    output_dir = Path(args.output_dir) if args.output_dir else repo_dir / "rankings"
-
-    main(
-        run_group_experiments_path=run_group_experiments_path,
-        runs_dir=runs_dir,
-        splits_dir=splits_dir,
-        competition_categories_path=competition_categories_path,
-        split_type=args.split_type,
-        competition_category=args.competition_category,
-        experiment_agents_path=experiment_agents_path,
-        output_dir=output_dir,
-        logger=logger,
-    )
