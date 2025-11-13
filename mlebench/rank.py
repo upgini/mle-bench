@@ -132,6 +132,97 @@ def get_competition_results(
     return results_df, is_lower_better
 
 
+def load_sample_reports(sample_report_path: Path, logger: Logger) -> dict[str, dict]:
+    sample_reports: dict[str, dict] = {}
+    if not sample_report_path.exists():
+        logger.warning(f"Sample grading report not found at {sample_report_path}")
+        return sample_reports
+    try:
+        sample_data = json.loads(sample_report_path.read_text())
+    except json.JSONDecodeError as exc:
+        logger.error(f"Failed to parse sample grading report at {sample_report_path}: {exc}")
+        return sample_reports
+
+    sample_competitions = sample_data.get("competition_reports", [])
+    if isinstance(sample_competitions, dict):
+        sample_competitions = [sample_competitions]
+
+    for report in sample_competitions:
+        competition_id = report.get("competition_id")
+        if competition_id:
+            sample_reports[competition_id] = report
+    return sample_reports
+
+
+def score_competition_results(
+    competition_id: str,
+    results_df: pd.DataFrame,
+    sample_reports: dict[str, dict],
+    is_lower_better: bool,
+    logger: Logger,
+) -> pd.DataFrame:
+    sample_report = sample_reports.get(competition_id)
+    sample_score = sample_report.get("score") if sample_report else None
+    sample_gold = sample_report.get("gold_threshold") if sample_report else None
+    denominator: float | None = None
+    if sample_score is not None and sample_gold is not None:
+        denominator = sample_score - sample_gold
+        if denominator == 0:
+            logger.warning(
+                "Sample submission score equals gold threshold for %s; normalized scores unavailable.",
+                competition_id,
+            )
+            denominator = None
+    else:
+        logger.warning(
+            "Missing sample submission baseline for %s; normalized scores unavailable.",
+            competition_id,
+        )
+
+    if denominator is not None:
+        results_df["normalized_score"] = (
+            (sample_score - results_df["score"]) / denominator
+            if is_lower_better
+            else (results_df["score"] - sample_score) / denominator
+        )
+        if not is_lower_better:
+            results_df["normalized_score"] = -results_df["normalized_score"]
+    else:
+        results_df["normalized_score"] = pd.NA
+    results_df["normalized_score"] = pd.to_numeric(results_df["normalized_score"], errors="coerce")
+
+    stats_df = results_df.groupby("experiment_id", group_keys=True).agg(
+        mean_score=("score", "mean"),
+        std_score=("score", "std"),
+        n_runs=("score", "count"),
+        mean_normalized_score=("normalized_score", "mean"),
+        std_normalized_score=("normalized_score", "std"),
+    )
+    stats_df = stats_df.reset_index()
+
+    stats_df["normalized_rank"] = stats_df["mean_normalized_score"].rank(
+        method="average", ascending=False, na_option="keep"
+    )
+    num_agents = len(stats_df)
+    if num_agents > 1:
+        stats_df["borda_score"] = (num_agents - stats_df["normalized_rank"]) / (num_agents - 1)
+    else:
+        stats_df["borda_score"] = 1.0
+    stats_df.loc[stats_df["normalized_rank"].isna(), "borda_score"] = pd.NA
+    stats_df = stats_df.sort_values("borda_score", ascending=False, na_position="last").reset_index(
+        drop=True
+    )
+
+    return stats_df
+
+
+def aggregate_scores(rank_series_list: list[pd.Series]) -> pd.Series | None:
+    if len(rank_series_list) == 0:
+        return None
+    rank_df = pd.concat(rank_series_list, axis=1)
+    return rank_df.mean(axis=1, skipna=False).rename("mean_rank")
+
+
 def collect_rankings(
     run_group_experiments_path: Path,
     runs_dir: Path,
@@ -141,7 +232,10 @@ def collect_rankings(
     competition_category: str,
     experiment_agents_path: Path,
     output_dir: Path,
+    sample_report_path: Path,
 ):
+    sample_reports = load_sample_reports(sample_report_path, logger)
+
     # Load competitions from configured split and category
     competitions = load_competitions(
         split_type=split_type,
@@ -194,16 +288,9 @@ def collect_rankings(
             logger.warning(f"No valid scores for {competition_id}")
             continue
 
-        stats_df = (
-            results_df.groupby("experiment_id", group_keys=True)["score"]
-            .agg(["mean", "std", "count"])
-            .reset_index()
+        stats_df = score_competition_results(
+            competition_id, results_df, sample_reports, is_lower_better, logger
         )
-        stats_df.columns = ["experiment_id", "mean_score", "std_score", "n_runs"]
-        stats_df["rank"] = stats_df["mean_score"].rank(
-            method="min", ascending=not is_lower_better, na_option="keep", pct=True
-        )
-        stats_df = stats_df.sort_values("rank", ascending=False).reset_index(drop=True)
 
         # Save per-competition CSV (without agent descriptions)
         competition_output = competition_results_dir / f"{competition_id}.csv"
@@ -211,16 +298,15 @@ def collect_rankings(
         logger.info(f"Saved results for {competition_id} to {competition_output}")
 
         # Collect ranks for overall ranking
-        competition_ranks = stats_df.set_index("experiment_id")["rank"].rename(competition_id)
-        rank_series_list.append(competition_ranks)
+        rank_series_list.append(
+            stats_df.set_index("experiment_id")["mean_normalized_score"].rename(competition_id)
+        )
 
     # Create overall score DataFrame
-    if len(rank_series_list) == 0:
+    rank_df = aggregate_scores(rank_series_list)
+    if rank_df is None:
         logger.error("No scores collected for any competition!")
         return
-
-    rank_df = pd.concat(rank_series_list, axis=1)
-    rank_df = rank_df.mean(axis=1, skipna=False).rename("mean_rank")
 
     # Create final results DataFrame
     final_results = rank_df.to_frame().reset_index()

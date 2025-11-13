@@ -180,6 +180,12 @@ def main():
         help="Path to output directory",
         default=str(repo_dir / "rankings"),
     )
+    parser_rank.add_argument(
+        "--sample-report-path",
+        type=str,
+        help="Path to sample submissions grading report JSON file",
+        default=str(repo_dir / "runs" / "sample-submissions" / "grading_report.json"),
+    )
 
     # Dev tools sub-parser
     parser_dev = subparsers.add_parser("dev", help="Developer tools for extending MLE-bench.")
@@ -193,7 +199,10 @@ def main():
     parser_download_leaderboard.add_argument(
         "-c",
         "--competition-id",
-        help=f"Name of the competition to download the leaderboard for. Valid options: {registry.list_competition_ids()}",
+        help=(
+            f"Name of the competition to download the leaderboard for. "
+            f"Valid options: {registry.list_competition_ids()}"
+        ),
         type=str,
         required=False,
     )
@@ -276,6 +285,7 @@ def main():
         splits_dir_path = Path(args.splits_dir)
         experiment_agents_path = Path(args.experiment_agents)
         output_dir_path = Path(args.output_dir)
+        sample_report_path = Path(args.sample_report_path)
         collect_rankings(
             run_group_experiments_path=run_group_experiments_path,
             runs_dir=runs_dir_path,
@@ -285,6 +295,7 @@ def main():
             competition_category=args.competition_category,
             experiment_agents_path=experiment_agents_path,
             output_dir=output_dir_path,
+            sample_report_path=sample_report_path,
         )
 
 
