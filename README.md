@@ -176,6 +176,16 @@ mlebench grade-sample <PATH_TO_SUBMISSION> spaceship-titanic
 
 See more information by running `mlebench grade-sample --help`.
 
+## Ranking across competition categories
+
+It's possible to rank existing results for a particular split and competition category. For this, you can run:
+
+```console
+mlebench rank  --split-type <split type> --competition-category <category>
+```
+
+This saves normalized scores for each competition plus overall ranking in separate files. See more information by running `mlebench rank --help`.
+
 ## Environment
 
 We provide a base Docker image `mlebench-env` which is the base environment for our agents. This base image contains:
