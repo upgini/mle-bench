@@ -35,24 +35,24 @@ The table below summarizes the tabular competition rankings for the Lite complex
 
 | Agent | LLM(s) used | Mean Normalized Score |
 | --- | --- | --- |
-| [FM Agent](https://github.com/baidubce/FM-Agent) | Gemini-2.5-Pro | 0.944 |
-| [Upgini](https://github.com/upgini/upgini) + [MLZero](https://github.com/upgini/autogluon-assistant) [^3] | o3-mini | 0.927 |
-| [MLZero](https://github.com/autogluon/autogluon-assistant) | o3-mini | 0.926 |
-| [Thesis](https://thesislabs.ai) | gpt-5-codex | 0.891 |
-| AIDE | claude-3-5-sonnet-20240620 | 0.874 |
-| AIDE | gpt-4o-2024-08-06 | 0.857 |
-| [R&D-Agent](https://github.com/microsoft/RD-Agent) | o1-preview | 0.818 |
-| [R&D-Agent](https://github.com/microsoft/RD-Agent) | o3 + GPT-4.1 | 0.793 |
-| AIDE | o1-preview | 0.783 |
-| [Operand](https://operand.com) ensemble | gpt-5 (low verbosity/effort) | 0.780 |
-| [Neo](https://heyneo.so/) multi-agent | undisclosed | 0.723 |
-| [R&D-Agent](https://github.com/microsoft/RD-Agent) | gpt-5 | 0.497 |
-| [InternAgent](https://github.com/Alpha-Innovator/InternAgent/) | deepseek-r1 | 0.048 |
-| AIDE | llama-3.1-405b-instruct | 0.041 |
-| [ML-Master](https://github.com/zeroxleo/ML-Master) | deepseek-r1 | -10.396 |
-| [CAIR](https://research.google/teams/cloud-ai-research/) MLE-STAR-Pro | Gemini-2.5-Pro | -12.560 |
-| OpenHands | gpt-4o-2024-08-06 | -17.743 |
-| MLAB | gpt-4o-2024-08-06 | -1083553262524.917 |
+| [FM Agent](https://github.com/baidubce/FM-Agent) | Gemini-2.5-Pro | 0.944 ± 0.103 |
+| [Upgini](https://github.com/upgini/upgini) + [MLZero](https://github.com/upgini/autogluon-assistant) [^3] | o3-mini | 0.927 ± 0.086 |
+| [MLZero](https://github.com/autogluon/autogluon-assistant) | o3-mini | 0.926 ± 0.088 |
+| [Thesis](https://thesislabs.ai) | gpt-5-codex | 0.891 ± 0.150 |
+| AIDE | claude-3-5-sonnet-20240620 | 0.874 ± 0.142 |
+| AIDE | gpt-4o-2024-08-06 | 0.857 ± 0.145 |
+| [R&D-Agent](https://github.com/microsoft/RD-Agent) | o1-preview | 0.818 ± 0.306 |
+| [R&D-Agent](https://github.com/microsoft/RD-Agent) | o3 + GPT-4.1 | 0.793 ± 0.371 |
+| AIDE | o1-preview | 0.783 ± 0.421 |
+| [Operand](https://operand.com) ensemble | gpt-5 (low verbosity/effort) | 0.780 ± 0.282 |
+| [Neo](https://heyneo.so/) multi-agent | undisclosed | 0.723 ± 0.483 |
+| [R&D-Agent](https://github.com/microsoft/RD-Agent) | gpt-5 | 0.497 ± 0.574 |
+| [InternAgent](https://github.com/Alpha-Innovator/InternAgent/) | deepseek-r1 | 0.048 ± 1.841 |
+| AIDE | llama-3.1-405b-instruct | 0.041 ± 1.603 |
+| [ML-Master](https://github.com/zeroxleo/ML-Master) | deepseek-r1 | -10.396 ± 22.766 |
+| [CAIR](https://research.google/teams/cloud-ai-research/) MLE-STAR-Pro | Gemini-2.5-Pro | -12.560 ± 27.105 |
+| OpenHands | gpt-4o-2024-08-06 | -17.743 ± 36.238 |
+| MLAB | gpt-4o-2024-08-06 | -1083553262524.917 ± 2167106525049.096 |
 
 [^3]: A fork with added integration with Upgini in the data processing step
 
