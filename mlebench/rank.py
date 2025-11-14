@@ -82,17 +82,20 @@ def load_competitions(
 
 def get_competition_results(
     competition_id: str, runs_dir: Path, experiment_groups: pd.DataFrame, logger: Logger
-) -> Tuple[pd.DataFrame | None, bool]:
+) -> pd.DataFrame | None:
     """Collect all results for a specific competition across all run groups."""
     results = []
-    is_lower_better: bool | None = None
 
-    for run_name in runs_dir.iterdir():
-        if not run_name.is_dir():
+    # Get unique run groups from experiment_groups
+    run_groups = experiment_groups["run_group"].unique()
+
+    for run_group in run_groups:
+        run_group_dir = runs_dir / run_group
+        if not run_group_dir.exists() or not run_group_dir.is_dir():
             continue
 
         # Find grading report files
-        grading_reports = sorted(list(run_name.glob("*grading_report*.json")))
+        grading_reports = sorted(list(run_group_dir.glob("*grading_report*.json")))
         if len(grading_reports) == 0:
             continue
 
@@ -106,30 +109,20 @@ def get_competition_results(
 
         for report in reports:
             if report.get("competition_id") == competition_id:
-                report["run_group"] = run_name.name
-                if is_lower_better is None and report.get("is_lower_better") is not None:
-                    is_lower_better = bool(report.get("is_lower_better"))
+                report["run_group"] = run_group
                 results.append(report)
                 break
 
     if len(results) == 0:
         logger.warning(f"No results found for competition: {competition_id}")
-        return None, False
+        return None
 
     results_df = pd.DataFrame(results)
-
-    if "is_lower_better" in results_df.columns:
-        is_lower_values = results_df["is_lower_better"].dropna()
-        if not is_lower_values.empty:
-            is_lower_better = bool(is_lower_values.iloc[0])
-
-    if is_lower_better is None:
-        is_lower_better = False
 
     # Merge with experiment groups
     results_df = results_df.merge(experiment_groups, how="left", on="run_group")
 
-    return results_df, is_lower_better
+    return results_df
 
 
 def load_sample_reports(sample_report_path: Path, logger: Logger) -> dict[str, dict]:
@@ -158,7 +151,6 @@ def score_competition_results(
     competition_id: str,
     results_df: pd.DataFrame,
     sample_reports: dict[str, dict],
-    is_lower_better: bool,
     logger: Logger,
 ) -> pd.DataFrame:
     sample_report = sample_reports.get(competition_id)
@@ -258,9 +250,7 @@ def collect_rankings(
 
     for competition_id in competitions:
         logger.info(f"Processing competition: {competition_id}")
-        results_df, is_lower_better = get_competition_results(
-            competition_id, runs_dir, experiment_groups, logger
-        )
+        results_df = get_competition_results(competition_id, runs_dir, experiment_groups, logger)
 
         if results_df is None or len(results_df) == 0:
             logger.warning(f"No results for {competition_id}")
@@ -273,9 +263,7 @@ def collect_rankings(
             logger.warning(f"No valid scores for {competition_id}")
             continue
 
-        stats_df = score_competition_results(
-            competition_id, results_df, sample_reports, is_lower_better, logger
-        )
+        stats_df = score_competition_results(competition_id, results_df, sample_reports, logger)
 
         # Save per-competition CSV (without agent descriptions)
         competition_output = competition_results_dir / f"{competition_id}.csv"
