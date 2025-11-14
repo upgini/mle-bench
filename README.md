@@ -17,6 +17,7 @@ Code for the paper ["MLE-Bench: Evaluating Machine Learning Agents on Machine Le
 | [R&D-Agent](https://github.com/microsoft/RD-Agent) | o3 + GPT-4.1 | 51.52 ± 4 | 19.3 ± 3.16 | 26.67 ± 0 | 30.22 ± 0.89 | 24 | 2025-08-15 | ✓ | ✓ |
 | [ML-Master](https://github.com/zeroxleo/ML-Master) | deepseek-r1 | 48.5 ± 1.5 | 20.2 ± 2.3 | 24.4 ± 2.2| 29.3 ± 0.8 | 12 | 2025-06-17 | ✓ | ✓ |
 | [R&D-Agent](https://github.com/microsoft/RD-Agent) | o1-preview | 48.18 ± 1.1 | 8.95 ± 1.05 | 18.67 ± 1.33 | 22.4 ± 0.5 | 24 | 2025-05-14 | ✓ | ✓ |
+| [MLZero](https://github.com/autogluon/autogluon-assistant) | claude-3.7-sonnet | 38.1 ± 0.0 | - | - | 10.66 ± 0.0 | 24 | 2025-05-20 | X [^2] | X |
 | AIDE | o1-preview | 34.3 ± 2.4 | 8.8 ± 1.1 | 10.0 ± 1.9 | 16.9 ± 1.1 | 24 | 2024-10-08 | ✓ | ✓ |
 | AIDE | gpt-4o-2024-08-06 | 19.0 ± 1.3 | 3.2 ± 0.5 | 5.6 ± 1.0 | 8.6 ± 0.5 | 24 | 2024-10-08 | ✓ | ✓ |
 | AIDE | claude-3-5-sonnet-20240620 | 19.4 ± 4.9 | 2.6 ± 1.5 | 2.3 ± 2.3 | 7.5 ± 1.8 | 24 | 2024-10-08 | ✓ | ✓ |
@@ -26,6 +27,7 @@ Code for the paper ["MLE-Bench: Evaluating Machine Learning Agents on Machine Le
 
 [^1]: With some light assistance from an ensemble of models including
     Gemini-2.5-Pro, Grok-4, and Claude 4.1 Opus, distilled by Gemini-2.5-Pro.
+[^2]: Results taken from the [MLZero paper](https://arxiv.org/pdf/2505.13941)
 
 ### Tabular Leaderbord (Lite Split)
 
@@ -34,7 +36,7 @@ The table below summarizes the tabular competition rankings for the Lite complex
 | Agent | LLM(s) used | Mean Normalized Score |
 | --- | --- | --- |
 | [FM Agent](https://github.com/baidubce/FM-Agent) | Gemini-2.5-Pro | 0.944 |
-| [Upgini](https://github.com/upgini/upgini) + [MLZero](https://github.com/upgini/autogluon-assistant) [^2] | o3-mini | 0.927 |
+| [Upgini](https://github.com/upgini/upgini) + [MLZero](https://github.com/upgini/autogluon-assistant) [^3] | o3-mini | 0.927 |
 | [MLZero](https://github.com/autogluon/autogluon-assistant) | o3-mini | 0.926 |
 | [Thesis](https://thesislabs.ai) | gpt-5-codex | 0.891 |
 | AIDE | claude-3-5-sonnet-20240620 | 0.874 |
@@ -52,7 +54,7 @@ The table below summarizes the tabular competition rankings for the Lite complex
 | OpenHands | gpt-4o-2024-08-06 | -17.743 |
 | MLAB | gpt-4o-2024-08-06 | -1083553262524.917 |
 
-[^2]: A fork with added integration with Upgini in the data processing step
+[^3]: A fork with added integration with Upgini in the data processing step
 
 ## Benchmarking
 
