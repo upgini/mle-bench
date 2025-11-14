@@ -180,16 +180,9 @@ def score_competition_results(
         )
 
     if denominator is not None:
-        results_df["normalized_score"] = (
-            (sample_score - results_df["score"]) / denominator
-            if is_lower_better
-            else (results_df["score"] - sample_score) / denominator
-        )
-        if not is_lower_better:
-            results_df["normalized_score"] = -results_df["normalized_score"]
+        results_df["normalized_score"] = (sample_score - results_df["score"]) / denominator
     else:
         results_df["normalized_score"] = pd.NA
-    results_df["normalized_score"] = pd.to_numeric(results_df["normalized_score"], errors="coerce")
 
     stats_df = results_df.groupby("experiment_id", group_keys=True).agg(
         mean_score=("score", "mean"),
@@ -200,27 +193,19 @@ def score_competition_results(
     )
     stats_df = stats_df.reset_index()
 
-    stats_df["normalized_rank"] = stats_df["mean_normalized_score"].rank(
-        method="average", ascending=False, na_option="keep"
-    )
-    num_agents = len(stats_df)
-    if num_agents > 1:
-        stats_df["borda_score"] = (num_agents - stats_df["normalized_rank"]) / (num_agents - 1)
-    else:
-        stats_df["borda_score"] = 1.0
-    stats_df.loc[stats_df["normalized_rank"].isna(), "borda_score"] = pd.NA
-    stats_df = stats_df.sort_values("borda_score", ascending=False, na_position="last").reset_index(
-        drop=True
-    )
+    stats_df = stats_df.sort_values(
+        "mean_normalized_score", ascending=False, na_position="last"
+    ).reset_index(drop=True)
 
     return stats_df
 
 
-def aggregate_scores(rank_series_list: list[pd.Series]) -> pd.Series | None:
+def aggregate_scores(rank_series_list: list[pd.Series]) -> pd.DataFrame | None:
     if len(rank_series_list) == 0:
         return None
-    rank_df = pd.concat(rank_series_list, axis=1)
-    return rank_df.mean(axis=1, skipna=False).rename("mean_rank")
+    rank_df = pd.concat(rank_series_list, axis=1).fillna(0)
+    rank_df = rank_df.mean(axis=1).rename("mean_normalized_score")
+    return rank_df.to_frame()
 
 
 def collect_rankings(
@@ -309,13 +294,15 @@ def collect_rankings(
         return
 
     # Create final results DataFrame
-    final_results = rank_df.to_frame().reset_index()
+    final_results = rank_df.reset_index()
     final_results = final_results.merge(experiment_agents, on="experiment_id", how="left")
 
     # Sort by mean_rank
-    final_results = final_results.sort_values("mean_rank", ascending=False).reset_index(drop=True)
+    final_results = final_results.sort_values("mean_normalized_score", ascending=False).reset_index(
+        drop=True
+    )
 
     # Save final mean ranks CSV
     final_output = base_output_dir / "overall_ranks.csv"
     final_results.to_csv(final_output, index=False)
-    logger.info(f"Saved final mean ranks to {final_output}")
+    logger.info(f"Saved final ranking to {final_output}")
