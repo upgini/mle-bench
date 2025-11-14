@@ -196,8 +196,9 @@ def aggregate_scores(rank_series_list: list[pd.Series]) -> pd.DataFrame | None:
     if len(rank_series_list) == 0:
         return None
     rank_df = pd.concat(rank_series_list, axis=1).fillna(0)
-    rank_df = rank_df.mean(axis=1).rename("mean_normalized_score")
-    return rank_df.to_frame()
+    rank_df = rank_df.agg(["mean", "std"], axis=1)
+    rank_df.columns = ["mean_normalized_score", "std_normalized_score"]
+    return rank_df
 
 
 def collect_rankings(
