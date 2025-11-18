@@ -1,60 +1,51 @@
-# MLE-bench
+# MLE-bench tabular
 
-Code for the paper ["MLE-Bench: Evaluating Machine Learning Agents on Machine Learning Engineering"](https://arxiv.org/abs/2410.07095). We have released the code used to construct the dataset, the evaluation logic, as well as the agents we evaluated for this benchmark.
-
-## Leaderboard
-
-| Agent | LLM(s) used | Low == Lite (%) | Medium (%) | High (%) | All (%) | Running Time (hours) | Date | Grading Reports Available | Source Code Available |
-|-------|-------------|-----------------|------------|----------|---------|----------------------|------|---------------------------|----------------------|
-| [Thesis](https://thesislabs.ai) | gpt-5-codex | 65.15 ± 2.14 | 45.61 ± 10.15 | 31.11 ± 3.14 | 48.44 ± 5.14 | 24 | 2025-11-10 | ✓ | X |
-| [FM Agent](https://github.com/baidubce/FM-Agent) | Gemini-2.5-Pro | 62.12 ± 3.03 | 36.84 ± 2.63 | 33.33 ± 0 | 43.56 ± 1.78 | 24 | 2025-10-10 | ✓ | X |
-| [Operand](https://operand.com) ensemble | gpt-5 (low verbosity/effort)[^1] | 63.64 ± 5.92 | 33.33 ± 4.42 | 20.00 ± 5.96 | 39.56 ± 3.26 | 24 | 2025-10-06 | ✓ | X |
-| [CAIR](https://research.google/teams/cloud-ai-research/) MLE-STAR-Pro | Gemini-2.5-Pro | 66.67 ± 1.52  | 25.44  ±  0.88 | 31.11 ± 2.22  | 38.67 ± 0.77 | 12 | 2025-11-03 | ✓ | X |
-| [InternAgent](https://github.com/Alpha-Innovator/InternAgent/) | deepseek-r1 | 62.12 ± 3.03 | 26.32 ± 2.63 | 24.44 ± 2.22| 36.44 ± 1.18 | 12 | 2025-09-12 | ✓ | X |
-| [R&D-Agent](https://github.com/microsoft/RD-Agent) | gpt-5 | 68.18 ± 2.62 | 21.05 ± 1.52 | 22.22 ± 2.22 | 35.11 ± 0.44 | 12 | 2025-09-26 | ✓ | ✓ |
-| [Neo](https://heyneo.so/) multi-agent | undisclosed | 48.48 ± 1.52 | 29.82 ± 2.32 | 24.44 ± 2.22 | 34.22 ± 0.89 | 36 | 2025-07-28 | ✓ | X |
-| [AIRA-dojo](https://github.com/facebookresearch/aira-dojo/) | o3 | 55.0 ± 1.5 | 22.0 ± 1.2 | 21.7 ± 1.1 | 31.6 ± 0.8 | 24 | 2025-05-15 | ✓ | ✓ |
-| [R&D-Agent](https://github.com/microsoft/RD-Agent) | o3 + GPT-4.1 | 51.52 ± 4 | 19.3 ± 3.16 | 26.67 ± 0 | 30.22 ± 0.89 | 24 | 2025-08-15 | ✓ | ✓ |
-| [ML-Master](https://github.com/zeroxleo/ML-Master) | deepseek-r1 | 48.5 ± 1.5 | 20.2 ± 2.3 | 24.4 ± 2.2| 29.3 ± 0.8 | 12 | 2025-06-17 | ✓ | ✓ |
-| [R&D-Agent](https://github.com/microsoft/RD-Agent) | o1-preview | 48.18 ± 1.1 | 8.95 ± 1.05 | 18.67 ± 1.33 | 22.4 ± 0.5 | 24 | 2025-05-14 | ✓ | ✓ |
-| [MLZero](https://github.com/autogluon/autogluon-assistant) | claude-3.7-sonnet | 38.1 ± 0.0 | - | - | 10.66 ± 0.0 | 24 | 2025-05-20 | X [^2] | X |
-| AIDE | o1-preview | 34.3 ± 2.4 | 8.8 ± 1.1 | 10.0 ± 1.9 | 16.9 ± 1.1 | 24 | 2024-10-08 | ✓ | ✓ |
-| AIDE | gpt-4o-2024-08-06 | 19.0 ± 1.3 | 3.2 ± 0.5 | 5.6 ± 1.0 | 8.6 ± 0.5 | 24 | 2024-10-08 | ✓ | ✓ |
-| AIDE | claude-3-5-sonnet-20240620 | 19.4 ± 4.9 | 2.6 ± 1.5 | 2.3 ± 2.3 | 7.5 ± 1.8 | 24 | 2024-10-08 | ✓ | ✓ |
-| OpenHands | gpt-4o-2024-08-06 | 11.5 ± 3.4 | 2.2 ± 1.3 | 1.9 ± 1.9 | 5.1 ± 1.3 | 24 | 2024-10-08 | ✓ | ✓ |
-| AIDE | llama-3.1-405b-instruct | 8.3 ± 2.6 | 1.2 ± 0.8 | 0.0 ± 0.0 | 3.1 ± 0.9 | 24 | 2024-10-08 | ✓ | ✓ |
-| MLAB | gpt-4o-2024-08-06 | 4.2 ± 1.5 | 0.0 ± 0.0 | 0.0 ± 0.0 | 1.3 ± 0.5 |  24 | 2024-10-08 | ✓ | ✓ |
-
-[^1]: With some light assistance from an ensemble of models including
-    Gemini-2.5-Pro, Grok-4, and Claude 4.1 Opus, distilled by Gemini-2.5-Pro.
-[^2]: Results taken from the [MLZero paper](https://arxiv.org/pdf/2505.13941)
+This is a fork of [MLE-bench](https://github.com/openai/mle-bench) that compares agent performance on tabular data. It uses exactly the same setup and differs just in the leaderboard view. We focus on tabular tasks and use normalized score instead of medal percentage to compare differently scaled scores. The leaderboard is recomputed upon updating submitted runs from OpenAI repo.
 
 ### Tabular Leaderbord (Lite Split)
 
-The table below summarizes the tabular competition rankings for the Lite complexity split. The score used is mean across scores normalized between sample submission score and the gold medal score.
+The table below summarizes the tabular competition rankings for the Lite complexity split. 
 
-| Agent | LLM(s) used | Mean Normalized Score |
-| --- | --- | --- |
-| [FM Agent](https://github.com/baidubce/FM-Agent) | Gemini-2.5-Pro | 0.944 ± 0.103 |
-| [Upgini](https://github.com/upgini/upgini) + [MLZero](https://github.com/upgini/autogluon-assistant) [^3] | o3-mini | 0.927 ± 0.086 |
-| [MLZero](https://github.com/autogluon/autogluon-assistant) | o3-mini | 0.926 ± 0.088 |
-| [Thesis](https://thesislabs.ai) | gpt-5-codex | 0.891 ± 0.150 |
-| AIDE | claude-3-5-sonnet-20240620 | 0.874 ± 0.142 |
-| AIDE | gpt-4o-2024-08-06 | 0.857 ± 0.145 |
-| [R&D-Agent](https://github.com/microsoft/RD-Agent) | o1-preview | 0.818 ± 0.306 |
-| [R&D-Agent](https://github.com/microsoft/RD-Agent) | o3 + GPT-4.1 | 0.793 ± 0.371 |
-| AIDE | o1-preview | 0.783 ± 0.421 |
-| [Operand](https://operand.com) ensemble | gpt-5 (low verbosity/effort) | 0.780 ± 0.282 |
-| [Neo](https://heyneo.so/) multi-agent | undisclosed | 0.723 ± 0.483 |
-| [R&D-Agent](https://github.com/microsoft/RD-Agent) | gpt-5 | 0.497 ± 0.574 |
-| [InternAgent](https://github.com/Alpha-Innovator/InternAgent/) | deepseek-r1 | 0.048 ± 1.841 |
-| AIDE | llama-3.1-405b-instruct | 0.041 ± 1.603 |
-| [ML-Master](https://github.com/zeroxleo/ML-Master) | deepseek-r1 | -10.396 ± 22.766 |
-| [CAIR](https://research.google/teams/cloud-ai-research/) MLE-STAR-Pro | Gemini-2.5-Pro | -12.560 ± 27.105 |
-| OpenHands | gpt-4o-2024-08-06 | -17.743 ± 36.238 |
-| MLAB | gpt-4o-2024-08-06 | -1083553262524.917 ± 2167106525049.096 |
+| Agent | LLM(s) used | Date | [Normalized Score](#mean-normalized-score) (Mean ± Std) | Any Medal (Mean ± Std) |
+| --- | --- | --- | --- | --- |
+| [FM Agent](https://github.com/baidubce/FM-Agent) | Gemini-2.5-Pro | 2025-10-10 | 0.944 ± 0.103 | 0.500 ± 0.577 |
+| [Upgini](https://github.com/upgini/upgini) + [MLZero](https://github.com/upgini/autogluon-assistant) [^3] | o3-mini | 2025-11-14 | 0.927 ± 0.086 | 0.500 ± 0.577 |
+| [MLZero](https://github.com/autogluon/autogluon-assistant) | o3-mini | 2025-11-14 | 0.926 ± 0.088 | 0.500 ± 0.577 |
+| [Thesis](https://thesislabs.ai) | gpt-5-codex | 2025-11-10 | 0.891 ± 0.150 | 0.500 ± 0.577 |
+| AIDE | claude-3-5-sonnet-20240620 | 2024-10-08 | 0.874 ± 0.142 | 0.500 ± 0.577 |
+| AIDE | gpt-4o-2024-08-06 | 2024-10-08 | 0.857 ± 0.145 | 0.375 ± 0.479 |
+| [R&D-Agent](https://github.com/microsoft/RD-Agent) | o1-preview | 2025-05-14 | 0.818 ± 0.306 | 0.500 ± 0.577 |
+| [R&D-Agent](https://github.com/microsoft/RD-Agent) | o3 + GPT-4.1 | 2025-08-15 | 0.793 ± 0.371 | 0.500 ± 0.577 |
+| AIDE | o1-preview | 2024-10-08 | 0.783 ± 0.421 | 0.500 ± 0.577 |
+| [Operand](https://operand.com) ensemble | gpt-5 (low verbosity/effort) | 2025-10-06 | 0.780 ± 0.282 | 0.500 ± 0.577 |
+| [Neo](https://heyneo.so/) multi-agent | undisclosed | 2025-07-28 | 0.723 ± 0.483 | 0.500 ± 0.577 |
+| [R&D-Agent](https://github.com/microsoft/RD-Agent) | gpt-5 | 2025-09-26 | 0.497 ± 0.574 | 0.500 ± 0.577 |
+| [InternAgent](https://github.com/Alpha-Innovator/InternAgent/) | deepseek-r1 | 2025-09-12 | 0.048 ± 1.841 | 0.500 ± 0.577 |
+| AIDE | llama-3.1-405b-instruct | 2024-10-08 | 0.041 ± 1.603 | 0.250 ± 0.500 |
+| [ML-Master](https://github.com/zeroxleo/ML-Master) | deepseek-r1 | 2025-06-17 | -10.396 ± 22.766 | 0.417 ± 0.500 |
+| [CAIR](https://research.google/teams/cloud-ai-research/) MLE-STAR-Pro | Gemini-2.5-Pro | 2025-11-03 | -12.560 ± 27.105 | 0.500 ± 0.577 |
+| OpenHands | gpt-4o-2024-08-06 | 2024-10-08 | -17.743 ± 36.238 | 0.375 ± 0.479 |
+| MLAB | gpt-4o-2024-08-06 | 2024-10-08 | -1083553262524.917 ± 2167106525049.096 | 0.083 ± 0.167 |
 
 [^3]: A fork with added integration with Upgini in the data processing step
+
+### Mean Normalized Score
+
+The score above is the mean across scores normalized between sample submission score and the gold medal score: 
+
+The formula for normalized score is:
+
+```
+normalized score = (sample submission score - score) / (sample submission score - gold medal score)
+```
+
+where:
+- **score** is the agent's raw score on a particular competition.
+- **gold medal score** is the score achieved by the gold medal baseline.
+- **sample submission score** is the score achieved by the public sample submission or baseline.
+
+This normalization ensures scores are comparable across competitions with different scales. A value of `1` thus means best human result.
+
 
 ## Benchmarking
 
