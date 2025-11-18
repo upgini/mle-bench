@@ -6,26 +6,26 @@ This is a fork of [MLE-bench](https://github.com/openai/mle-bench) that compares
 
 The table below summarizes the tabular competition rankings for the Lite complexity split. 
 
-| Agent | LLM(s) used | [Normalized Score](#mean-normalized-score) (Mean ± Std) | Any Medal (Mean ± Std) |
-| --- | --- | --- | --- |
-| [FM Agent](https://github.com/baidubce/FM-Agent) | Gemini-2.5-Pro | 0.944 ± 0.103 | 0.500 ± 0.577 |
-| [Upgini](https://github.com/upgini/upgini) + [MLZero](https://github.com/upgini/autogluon-assistant) [^3] | o3-mini | 0.927 ± 0.086 | 0.500 ± 0.577 |
-| [MLZero](https://github.com/autogluon/autogluon-assistant) | o3-mini | 0.926 ± 0.088 | 0.500 ± 0.577 |
-| [Thesis](https://thesislabs.ai) | gpt-5-codex | 0.891 ± 0.150 | 0.500 ± 0.577 |
-| AIDE | claude-3-5-sonnet-20240620 | 0.874 ± 0.142 | 0.500 ± 0.577 |
-| AIDE | gpt-4o-2024-08-06 | 0.857 ± 0.145 | 0.375 ± 0.479 |
-| [R&D-Agent](https://github.com/microsoft/RD-Agent) | o1-preview | 0.818 ± 0.306 | 0.500 ± 0.577 |
-| [R&D-Agent](https://github.com/microsoft/RD-Agent) | o3 + GPT-4.1 | 0.793 ± 0.371 | 0.500 ± 0.577 |
-| AIDE | o1-preview | 0.783 ± 0.421 | 0.500 ± 0.577 |
-| [Operand](https://operand.com) ensemble | gpt-5 (low verbosity/effort) | 0.780 ± 0.282 | 0.500 ± 0.577 |
-| [Neo](https://heyneo.so/) multi-agent | undisclosed | 0.723 ± 0.483 | 0.500 ± 0.577 |
-| [R&D-Agent](https://github.com/microsoft/RD-Agent) | gpt-5 | 0.497 ± 0.574 | 0.500 ± 0.577 |
-| [InternAgent](https://github.com/Alpha-Innovator/InternAgent/) | deepseek-r1 | 0.048 ± 1.841 | 0.500 ± 0.577 |
-| AIDE | llama-3.1-405b-instruct | 0.041 ± 1.603 | 0.250 ± 0.500 |
-| [ML-Master](https://github.com/zeroxleo/ML-Master) | deepseek-r1 | -10.396 ± 22.766 | 0.417 ± 0.500 |
-| [CAIR](https://research.google/teams/cloud-ai-research/) MLE-STAR-Pro | Gemini-2.5-Pro | -12.560 ± 27.105 | 0.500 ± 0.577 |
-| OpenHands | gpt-4o-2024-08-06 | -17.743 ± 36.238 | 0.375 ± 0.479 |
-| MLAB | gpt-4o-2024-08-06 | -1083553262524.917 ± 2167106525049.096 | 0.083 ± 0.167 |
+| Agent | LLM(s) used | Date | [Normalized Score](#mean-normalized-score) (Mean ± Std) | Any Medal (Mean ± Std) |
+| --- | --- | --- | --- | --- |
+| [FM Agent](https://github.com/baidubce/FM-Agent) | Gemini-2.5-Pro | 2025-10-10 | 0.944 ± 0.103 | 0.500 ± 0.577 |
+| [Upgini](https://github.com/upgini/upgini) + [MLZero](https://github.com/upgini/autogluon-assistant) [^3] | o3-mini | 2025-11-14 | 0.927 ± 0.086 | 0.500 ± 0.577 |
+| [MLZero](https://github.com/autogluon/autogluon-assistant) | o3-mini | 2025-11-14 | 0.926 ± 0.088 | 0.500 ± 0.577 |
+| [Thesis](https://thesislabs.ai) | gpt-5-codex | 2025-11-10 | 0.891 ± 0.150 | 0.500 ± 0.577 |
+| AIDE | claude-3-5-sonnet-20240620 | 2024-10-08 | 0.874 ± 0.142 | 0.500 ± 0.577 |
+| AIDE | gpt-4o-2024-08-06 | 2024-10-08 | 0.857 ± 0.145 | 0.375 ± 0.479 |
+| [R&D-Agent](https://github.com/microsoft/RD-Agent) | o1-preview | 2025-05-14 | 0.818 ± 0.306 | 0.500 ± 0.577 |
+| [R&D-Agent](https://github.com/microsoft/RD-Agent) | o3 + GPT-4.1 | 2025-08-15 | 0.793 ± 0.371 | 0.500 ± 0.577 |
+| AIDE | o1-preview | 2024-10-08 | 0.783 ± 0.421 | 0.500 ± 0.577 |
+| [Operand](https://operand.com) ensemble | gpt-5 (low verbosity/effort) | 2025-10-06 | 0.780 ± 0.282 | 0.500 ± 0.577 |
+| [Neo](https://heyneo.so/) multi-agent | undisclosed | 2025-07-28 | 0.723 ± 0.483 | 0.500 ± 0.577 |
+| [R&D-Agent](https://github.com/microsoft/RD-Agent) | gpt-5 | 2025-09-26 | 0.497 ± 0.574 | 0.500 ± 0.577 |
+| [InternAgent](https://github.com/Alpha-Innovator/InternAgent/) | deepseek-r1 | 2025-09-12 | 0.048 ± 1.841 | 0.500 ± 0.577 |
+| AIDE | llama-3.1-405b-instruct | 2024-10-08 | 0.041 ± 1.603 | 0.250 ± 0.500 |
+| [ML-Master](https://github.com/zeroxleo/ML-Master) | deepseek-r1 | 2025-06-17 | -10.396 ± 22.766 | 0.417 ± 0.500 |
+| [CAIR](https://research.google/teams/cloud-ai-research/) MLE-STAR-Pro | Gemini-2.5-Pro | 2025-11-03 | -12.560 ± 27.105 | 0.500 ± 0.577 |
+| OpenHands | gpt-4o-2024-08-06 | 2024-10-08 | -17.743 ± 36.238 | 0.375 ± 0.479 |
+| MLAB | gpt-4o-2024-08-06 | 2024-10-08 | -1083553262524.917 ± 2167106525049.096 | 0.083 ± 0.167 |
 
 [^3]: A fork with added integration with Upgini in the data processing step
 
