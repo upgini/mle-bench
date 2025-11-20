@@ -159,13 +159,20 @@ def get_any_medal_results(
         reports = data.get("competition_reports", [])
         if isinstance(reports, dict):
             reports = [reports]
-        medals = sum(
-            1
-            for report in reports
-            if report.get("competition_id") in competition_ids and report.get("any_medal")
+        reports_df = pd.DataFrame(
+            [
+                report
+                for report in reports
+                if report.get("competition_id") in competition_ids
+                and report.get("valid_submission")
+            ]
         )
-        medal_pct = medals / len(competition_ids) if competition_ids else 0.0
-        results.append({"run_group": run_group, "medal_pct": medal_pct})
+        if not reports_df.empty:
+            medals = reports_df.groupby("competition_id").agg(any_medal=("any_medal", "median"))
+            medal_pct = medals.mean()
+            results.append({"run_group": run_group, "medal_pct": medal_pct})
+        else:
+            results.append({"run_group": run_group, "medal_pct": 0.0})
 
     if len(results) == 0:
         logger.warning("No any medal results found")
@@ -179,6 +186,7 @@ def get_any_medal_results(
         mean_medal_pct=("medal_pct", "mean"),
         std_medal_pct=("medal_pct", "std"),
     )
+
     results_df = results_df.reset_index()
 
     return results_df
@@ -372,7 +380,7 @@ def collect_rankings(
     medal_df = get_any_medal_results(runs_dir, experiment_groups, competitions, logger)
 
     # Create final results DataFrame
-    final_results = rank_df.merge(medal_df, on="experiment_id", how="left").reset_index()
+    final_results = rank_df.merge(medal_df, on="experiment_id", how="left").reset_index(drop=True)
     final_results = final_results.merge(experiment_agents, on="experiment_id", how="left")
 
     # Sort by mean_rank
