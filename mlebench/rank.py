@@ -2,7 +2,7 @@ import json
 import re
 from logging import Logger
 from pathlib import Path
-from typing import List, Tuple
+from typing import List
 
 import pandas as pd
 
@@ -25,7 +25,7 @@ def load_competitions(
     competition_categories_path: Path,
     logger: Logger,
 ) -> List[str]:
-    """Load competition IDs filtered by split and competition category."""
+    """Load competition IDs filtered by split and, optionally, competition category."""
     split_file = splits_dir / f"{split_type}.txt"
 
     if not split_file.exists():
@@ -40,6 +40,15 @@ def load_competitions(
 
     if len(split_competitions) == 0:
         logger.warning(f"No competitions listed in split file: {split_file}")
+
+    normalized_category = competition_category.strip().casefold()
+    include_all_categories = normalized_category == "all"
+
+    if include_all_categories:
+        logger.info(
+            f"Loaded {len(split_competitions)} competitions for split '{split_type}' across all categories."
+        )
+        return split_competitions
 
     competition_categories = read_csv(competition_categories_path)
 
@@ -152,29 +161,34 @@ def score_competition_results(
     results_df: pd.DataFrame,
     sample_reports: dict[str, dict],
     logger: Logger,
-) -> pd.DataFrame:
+) -> pd.DataFrame | None:
     sample_report = sample_reports.get(competition_id)
-    sample_score = sample_report.get("score") if sample_report else None
-    sample_gold = sample_report.get("gold_threshold") if sample_report else None
-    denominator: float | None = None
-    if sample_score is not None and sample_gold is not None:
-        denominator = sample_score - sample_gold
-        if denominator == 0:
-            logger.warning(
-                "Sample submission score equals gold threshold for %s; normalized scores unavailable.",
-                competition_id,
-            )
-            denominator = None
-    else:
+    if not sample_report:
         logger.warning(
-            "Missing sample submission baseline for %s; normalized scores unavailable.",
+            "Sample submission score not found for %s; skipping competition in aggregated rankings.",
             competition_id,
         )
+        return None
 
-    if denominator is not None:
-        results_df["normalized_score"] = (sample_score - results_df["score"]) / denominator
-    else:
-        results_df["normalized_score"] = pd.NA
+    sample_score = sample_report.get("score")
+    sample_gold = sample_report.get("gold_threshold")
+    if sample_score is None or sample_gold is None:
+        logger.warning(
+            "Sample submission score or gold threshold missing for %s; skipping competition in aggregated rankings.",
+            competition_id,
+        )
+        return None
+
+    denominator: float | None = None
+    denominator = sample_score - sample_gold
+    if denominator == 0:
+        logger.warning(
+            "Sample submission score equals gold threshold for %s; normalized scores unavailable.",
+            competition_id,
+        )
+        return None
+
+    results_df["normalized_score"] = (sample_score - results_df["score"]) / denominator
 
     stats_df = results_df.groupby("experiment_id", group_keys=True).agg(
         mean_score=("score", "mean"),
@@ -213,6 +227,8 @@ def collect_rankings(
     experiment_agents_path: Path,
     output_dir: Path,
     sample_report_path: Path,
+    strict: bool = False,
+    max_competitions_missed: int = 0,
 ):
     sample_reports = load_sample_reports(sample_report_path, logger)
 
@@ -269,6 +285,9 @@ def collect_rankings(
 
         stats_df = score_competition_results(competition_id, results_df, sample_reports, logger)
 
+        if stats_df is None:
+            continue
+
         # Save per-competition CSV (without agent descriptions)
         competition_output = competition_results_dir / f"{competition_id}.csv"
         stats_df.to_csv(competition_output, index=False)
@@ -282,12 +301,30 @@ def collect_rankings(
             stats_df.set_index("experiment_id")["mean_any_medal"].rename(competition_id)
         )
 
-    # Create overall score DataFrame
-    rank_df = aggregate_scores(rank_series_list, "normalized_score")
-    medal_df = aggregate_scores(medal_series_list, "any_medal")
-    if rank_df is None:
+    if len(rank_series_list) == 0:
         logger.error("No scores collected for any competition!")
         return
+
+    # Create overall score DataFrame
+    per_competition_rank_df = pd.concat(rank_series_list, axis=1)
+    rank_df = aggregate_scores(rank_series_list, "normalized_score")
+    medal_df = aggregate_scores(medal_series_list, "any_medal")
+
+    if strict:
+        rank_df, medal_df = exclude_agents_with_missing_results(
+            per_competition_rank_df, rank_df, medal_df, max_competitions_missed
+        )
+        if len(rank_df) == 0:
+            logger.error(
+                "Strict ranking removed all experiments; cannot compute overall ranking. "
+                "Ensure every agent has results for all competitions with sample scores."
+            )
+            return
+    elif max_competitions_missed > 0:
+        logger.info(
+            "max_competitions_missed=%d specified but strict ranking disabled; parameter has no effect.",
+            max_competitions_missed,
+        )
 
     # Create final results DataFrame
     final_results = pd.concat([rank_df, medal_df], axis=1).reset_index()
@@ -302,3 +339,40 @@ def collect_rankings(
     final_output = base_output_dir / "overall_ranks.csv"
     final_results.to_csv(final_output, index=False)
     logger.info(f"Saved final ranking to {final_output}")
+
+
+def exclude_agents_with_missing_results(
+    per_competition_rank_df: pd.DataFrame,
+    rank_df: pd.DataFrame,
+    medal_df: pd.DataFrame,
+    max_competitions_missed: int,
+) -> tuple[pd.DataFrame, pd.DataFrame]:
+    if max_competitions_missed < 0:
+        logger.warning(
+            "max_competitions_missed (%d) is negative; treating it as 0.",
+            max_competitions_missed,
+        )
+        max_competitions_missed = 0
+
+    required_competitions = per_competition_rank_df.shape[1]
+    coverage_counts = per_competition_rank_df.notna().sum(axis=1)
+    missing_counts = required_competitions - coverage_counts
+    allowed_mask = missing_counts <= max_competitions_missed
+    permitted_experiments = missing_counts[allowed_mask].index
+    removed_experiments = set(rank_df.index) - set(permitted_experiments)
+    if len(removed_experiments) > 0:
+        logger.info(
+            (
+                "Strict ranking enabled; excluding %d experiment(s) missing more than %d competition result(s) "
+                "out of %d competitions: %s"
+            ),
+            len(removed_experiments),
+            max_competitions_missed,
+            required_competitions,
+            ", ".join(sorted(removed_experiments)),
+        )
+    rank_df = rank_df.loc[permitted_experiments]
+    if medal_df is not None:
+        medal_df = medal_df.loc[medal_df.index.intersection(permitted_experiments)]
+
+    return rank_df, medal_df
