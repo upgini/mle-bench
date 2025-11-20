@@ -134,6 +134,56 @@ def get_competition_results(
     return results_df
 
 
+def get_any_medal_results(
+    runs_dir: Path, experiment_groups: pd.DataFrame, competition_ids: List[str], logger: Logger
+) -> pd.DataFrame:
+    results = []
+
+    # Get unique run groups from experiment_groups
+    run_groups = experiment_groups["run_group"].unique()
+
+    for run_group in run_groups:
+        run_group_dir = runs_dir / run_group
+        if not run_group_dir.exists() or not run_group_dir.is_dir():
+            continue
+
+        # Find grading report files
+        grading_reports = sorted(list(run_group_dir.glob("*grading_report*.json")))
+        if len(grading_reports) == 0:
+            continue
+
+        # Load the latest grading report
+        latest_report = grading_reports[-1]
+
+        data = json.loads(latest_report.read_text())
+        reports = data.get("competition_reports", [])
+        if isinstance(reports, dict):
+            reports = [reports]
+        medals = sum(
+            1
+            for report in reports
+            if report.get("competition_id") in competition_ids and report.get("any_medal")
+        )
+        medal_pct = medals / len(competition_ids) if competition_ids else 0.0
+        results.append({"run_group": run_group, "medal_pct": medal_pct})
+
+    if len(results) == 0:
+        logger.warning("No any medal results found")
+        return pd.DataFrame(columns=["run_group", "medal_pct"])
+
+    results_df = pd.DataFrame(results)
+
+    # Merge with experiment groups
+    results_df = experiment_groups.merge(results_df, how="left", on="run_group")
+    results_df = results_df.groupby("experiment_id").agg(
+        mean_medal_pct=("medal_pct", "mean"),
+        std_medal_pct=("medal_pct", "std"),
+    )
+    results_df = results_df.reset_index()
+
+    return results_df
+
+
 def load_sample_reports(sample_report_path: Path, logger: Logger) -> dict[str, dict]:
     sample_reports: dict[str, dict] = {}
     if not sample_report_path.exists():
@@ -196,8 +246,6 @@ def score_competition_results(
         n_runs=("score", "count"),
         mean_normalized_score=("normalized_score", "mean"),
         std_normalized_score=("normalized_score", "std"),
-        mean_any_medal=("any_medal", "mean"),
-        std_any_medal=("any_medal", "std"),
     )
     stats_df = stats_df.reset_index()
 
@@ -266,7 +314,6 @@ def collect_rankings(
 
     # Collect results for each tabular competition
     rank_series_list: list[pd.Series] = []
-    medal_series_list: list[pd.Series] = []
 
     for competition_id in competitions:
         logger.info(f"Processing competition: {competition_id}")
@@ -297,9 +344,6 @@ def collect_rankings(
         rank_series_list.append(
             stats_df.set_index("experiment_id")["mean_normalized_score"].rename(competition_id)
         )
-        medal_series_list.append(
-            stats_df.set_index("experiment_id")["mean_any_medal"].rename(competition_id)
-        )
 
     if len(rank_series_list) == 0:
         logger.error("No scores collected for any competition!")
@@ -308,11 +352,10 @@ def collect_rankings(
     # Create overall score DataFrame
     per_competition_rank_df = pd.concat(rank_series_list, axis=1)
     rank_df = aggregate_scores(rank_series_list, "normalized_score")
-    medal_df = aggregate_scores(medal_series_list, "any_medal")
 
     if strict:
-        rank_df, medal_df = exclude_agents_with_missing_results(
-            per_competition_rank_df, rank_df, medal_df, max_competitions_missed
+        rank_df = exclude_agents_with_missing_results(
+            per_competition_rank_df, rank_df, max_competitions_missed
         )
         if len(rank_df) == 0:
             logger.error(
@@ -326,8 +369,10 @@ def collect_rankings(
             max_competitions_missed,
         )
 
+    medal_df = get_any_medal_results(runs_dir, experiment_groups, competitions, logger)
+
     # Create final results DataFrame
-    final_results = pd.concat([rank_df, medal_df], axis=1).reset_index()
+    final_results = rank_df.merge(medal_df, on="experiment_id", how="left").reset_index()
     final_results = final_results.merge(experiment_agents, on="experiment_id", how="left")
 
     # Sort by mean_rank
@@ -344,7 +389,6 @@ def collect_rankings(
 def exclude_agents_with_missing_results(
     per_competition_rank_df: pd.DataFrame,
     rank_df: pd.DataFrame,
-    medal_df: pd.DataFrame,
     max_competitions_missed: int,
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
     if max_competitions_missed < 0:
@@ -372,7 +416,5 @@ def exclude_agents_with_missing_results(
             ", ".join(sorted(removed_experiments)),
         )
     rank_df = rank_df.loc[permitted_experiments]
-    if medal_df is not None:
-        medal_df = medal_df.loc[medal_df.index.intersection(permitted_experiments)]
 
-    return rank_df, medal_df
+    return rank_df
