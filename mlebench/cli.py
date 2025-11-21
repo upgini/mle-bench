@@ -204,6 +204,12 @@ def main():
             "before being excluded from the overall ranking."
         ),
     )
+    parser_rank.add_argument(
+        "--dry-run",
+        action="store_true",
+        default=False,
+        help="Skip writing CSVs and print the overall rankings DataFrame to stdout.",
+    )
 
     # Dev tools sub-parser
     parser_dev = subparsers.add_parser("dev", help="Developer tools for extending MLE-bench.")
@@ -316,6 +322,7 @@ def main():
             sample_report_path=sample_report_path,
             strict=args.strict,
             max_competitions_missed=args.max_competitions_missed,
+            dry_run=args.dry_run,
         )
 
 
