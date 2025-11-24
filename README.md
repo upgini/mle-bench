@@ -1,31 +1,30 @@
 # MLE-bench tabular
 
-This is a fork of [MLE-bench](https://github.com/openai/mle-bench) that compares agent performance on tabular data. It uses exactly the same setup and differs just in the leaderboard view. We focus on tabular tasks and use normalized score instead of medal percentage to compare differently scaled scores. The leaderboard is recomputed upon updating submitted runs from OpenAI repo.
+This is a fork of [MLE-bench](https://github.com/openai/mle-bench) that compares agent performance on tabular data. It uses exactly the same setup and differs just in the leaderboard view. We focus on tabular tasks and use normalized score instead of medal percentage to compare differently scaled scores. The leaderboard is [recomputed](#ranking-across-competition-categories) upon updating submitted runs from OpenAI repo.
 
 ### Tabular Leaderbord (Lite Split)
 
 The table below summarizes the tabular competition rankings for the Lite complexity split. 
 
-| Agent | LLM(s) used | Date | [Normalized Score](#mean-normalized-score) (Mean ± Std) | Any Medal (Mean ± Std) |
+| Agent | LLM(s) used | Date | [Normalized Score](#mean-normalized-score) (Mean ± Std) | Any Medal % (Mean ± Std) |
 | --- | --- | --- | --- | --- |
-| [FM Agent](https://github.com/baidubce/FM-Agent) | Gemini-2.5-Pro | 2025-10-10 | 0.944 ± 0.103 | 0.500 ± 0.577 |
-| [Upgini](https://github.com/upgini/upgini) + [MLZero](https://github.com/upgini/autogluon-assistant) [^3] | o3-mini | 2025-11-14 | 0.927 ± 0.086 | 0.500 ± 0.577 |
-| [MLZero](https://github.com/autogluon/autogluon-assistant) | o3-mini | 2025-11-14 | 0.926 ± 0.088 | 0.500 ± 0.577 |
-| [Thesis](https://thesislabs.ai) | gpt-5-codex | 2025-11-10 | 0.891 ± 0.150 | 0.500 ± 0.577 |
-| AIDE | claude-3-5-sonnet-20240620 | 2024-10-08 | 0.874 ± 0.142 | 0.500 ± 0.577 |
-| AIDE | gpt-4o-2024-08-06 | 2024-10-08 | 0.857 ± 0.145 | 0.375 ± 0.479 |
-| [R&D-Agent](https://github.com/microsoft/RD-Agent) | o1-preview | 2025-05-14 | 0.818 ± 0.306 | 0.500 ± 0.577 |
-| [R&D-Agent](https://github.com/microsoft/RD-Agent) | o3 + GPT-4.1 | 2025-08-15 | 0.793 ± 0.371 | 0.500 ± 0.577 |
-| AIDE | o1-preview | 2024-10-08 | 0.783 ± 0.421 | 0.500 ± 0.577 |
-| [Operand](https://operand.com) ensemble | gpt-5 (low verbosity/effort) | 2025-10-06 | 0.780 ± 0.282 | 0.500 ± 0.577 |
-| [Neo](https://heyneo.so/) multi-agent | undisclosed | 2025-07-28 | 0.723 ± 0.483 | 0.500 ± 0.577 |
-| [R&D-Agent](https://github.com/microsoft/RD-Agent) | gpt-5 | 2025-09-26 | 0.497 ± 0.574 | 0.500 ± 0.577 |
-| [InternAgent](https://github.com/Alpha-Innovator/InternAgent/) | deepseek-r1 | 2025-09-12 | 0.048 ± 1.841 | 0.500 ± 0.577 |
-| AIDE | llama-3.1-405b-instruct | 2024-10-08 | 0.041 ± 1.603 | 0.250 ± 0.500 |
-| [ML-Master](https://github.com/zeroxleo/ML-Master) | deepseek-r1 | 2025-06-17 | -10.396 ± 22.766 | 0.417 ± 0.500 |
-| [CAIR](https://research.google/teams/cloud-ai-research/) MLE-STAR-Pro | Gemini-2.5-Pro | 2025-11-03 | -12.560 ± 27.105 | 0.500 ± 0.577 |
-| OpenHands | gpt-4o-2024-08-06 | 2024-10-08 | -17.743 ± 36.238 | 0.375 ± 0.479 |
-| MLAB | gpt-4o-2024-08-06 | 2024-10-08 | -1083553262524.917 ± 2167106525049.096 | 0.083 ± 0.167 |
+| [FM Agent](https://github.com/baidubce/FM-Agent) | Gemini-2.5-Pro | 2025-10-10 | 0.944 ± 0.103 | 0.500 ± 0.000 |
+| [Upgini](https://github.com/upgini/upgini) + [MLZero](https://github.com/upgini/autogluon-assistant) [^3] | o3-mini | 2025-11-14 | 0.927 ± 0.086 | 0.500 ± 0.000 |
+| [MLZero](https://github.com/autogluon/autogluon-assistant) | o3-mini | 2025-11-14 | 0.926 ± 0.088 | 0.500 ± 0.000 |
+| [Thesis](https://thesislabs.ai) | gpt-5-codex | 2025-11-10 | 0.891 ± 0.150 | 0.500 ± 0.000 |
+| [AIDE](https://github.com/wecoai/aideml) | claude-3-5-sonnet-20240620 | 2024-10-08 | 0.874 ± 0.142 | 0.208 ± 0.212 |
+| [AIDE](https://github.com/wecoai/aideml) | gpt-4o-2024-08-06 | 2024-10-08 | 0.857 ± 0.145 | 0.333 ± 0.236 |
+| [R&D-Agent](https://github.com/microsoft/RD-Agent) | o1-preview | 2025-05-14 | 0.818 ± 0.306 | 0.500 ± 0.000 |
+| [R&D-Agent](https://github.com/microsoft/RD-Agent) | o3 + GPT-4.1 | 2025-08-15 | 0.793 ± 0.371 | 0.500 ± 0.000 |
+| [AIDE](https://github.com/wecoai/aideml) | o1-preview | 2024-10-08 | 0.783 ± 0.421 | 0.400 ± 0.115 |
+| [Operand](https://operand.com) ensemble | gpt-5 (low verbosity/effort) | 2025-10-06 | 0.780 ± 0.282 | 0.500 ± 0.000 |
+| [CAIR](https://research.google/teams/cloud-ai-research/) MLE-STAR-Pro | Gemini-2.5-Pro | 2025-11-03 | 0.727 ± 0.532 | 0.500 ± 0.000 |
+| [Neo](https://heyneo.so/) multi-agent | undisclosed | 2025-07-28 | 0.723 ± 0.483 | 0.500 ± 0.000 |
+| [InternAgent](https://github.com/Alpha-Innovator/InternAgent/) | deepseek-r1 | 2025-09-12 | 0.711 ± 0.518 | 0.500 ± 0.000 |
+| [ML-Master](https://github.com/zeroxleo/ML-Master) | deepseek-r1 | 2025-06-17 | 0.687 ± 0.600 | 0.417 ± 0.118 |
+| [R&D-Agent](https://github.com/microsoft/RD-Agent) | gpt-5 | 2025-09-26 | 0.497 ± 0.574 | 0.500 ± 0.000 |
+| [AIDE](https://github.com/wecoai/aideml) | llama-3.1-405b-instruct | 2024-10-08 | 0.328 ± 1.032 | 0.250 ± -- |
+| MLAB | gpt-4o-2024-08-06 | 2024-10-08 | -0.110 ± 0.392 | 0.125 ± 0.088 |
 
 [^3]: A fork with added integration with Upgini in the data processing step
 
@@ -45,6 +44,29 @@ where:
 - **sample submission score** is the score achieved by the public sample submission or baseline.
 
 This normalization ensures scores are comparable across competitions with different scales. A value of `1` thus means best human result.
+
+### Low Split Overall Leaderboard
+
+The table below shows the overall Low split leaderboard for all competition categories. It is ranked by normalized score, with any medal score added for reference. The any medal score is computed uniformly across all entries and might slightly differ from the values added by participants by hand.
+
+| Agent | LLM(s) used | Date | Normalized Score (Mean ± Std) | Any Medal % (Mean ± Std) |
+| --- | --- | --- | --- | --- |
+| [FM Agent](https://github.com/baidubce/FM-Agent) | Gemini-2.5-Pro | 2025-10-10 | 0.909 ± 0.201 | 62.12 ± 2.14 |
+| [InternAgent](https://github.com/Alpha-Innovator/InternAgent/) | deepseek-r1 | 2025-09-12 | 0.893 ± 0.264 | 62.12 ± 4.29 |
+| [Thesis](https://thesislabs.ai) | gpt-5-codex | 2025-11-10 | 0.886 ± 0.218 | 65.15 ± 2.14 |
+| [Operand](https://operand.com) ensemble | gpt-5 (low verbosity/effort) | 2025-10-06 | 0.883 ± 0.194 | 63.64 ± 0.00 |
+| [R&D-Agent](https://github.com/microsoft/RD-Agent) | o1-preview | 2025-05-14 | 0.880 ± 0.199 | 48.18 ± 1.29 |
+| [ML-Master](https://github.com/zeroxleo/ML-Master) | deepseek-r1 | 2025-06-17 | 0.864 ± 0.311 | 48.48 ± 2.14 |
+| [AIDE](https://github.com/wecoai/aideml) | o1-preview | 2024-10-08 | 0.856 ± 0.236 | 34.09 ± 10.33 |
+| [R&D-Agent](https://github.com/microsoft/RD-Agent) | o3 + GPT-4.1 | 2025-08-15 | 0.837 ± 0.321 | 51.52 ± 5.67 |
+| [CAIR](https://research.google/teams/cloud-ai-research/) MLE-STAR-Pro | Gemini-2.5-Pro | 2025-11-03 | 0.822 ± 0.411 | 66.67 ± 2.14 |
+| [R&D-Agent](https://github.com/microsoft/RD-Agent) | gpt-5 | 2025-09-26 | 0.746 ± 0.428 | 68.18 ± 3.71 |
+| [Neo](https://heyneo.so/) multi-agent | undisclosed | 2025-07-28 | 0.699 ± 0.382 | 48.48 ± 2.14 |
+| [AIDE](https://github.com/wecoai/aideml) | gpt-4o-2024-08-06 | 2024-10-08 | 0.661 ± 0.334 | 18.51 ± 2.95 |
+| [AIDE](https://github.com/wecoai/aideml) | claude-3-5-sonnet-20240620 | 2024-10-08 | 0.505 ± 0.584 | 8.33 ± 10.22 |
+| OpenHands | gpt-4o-2024-08-06 | 2024-10-08 | 0.430 ± 0.392 | 6.82 ± 4.82 |
+| MLAB | gpt-4o-2024-08-06 | 2024-10-08 | 0.299 ± 0.426 | 2.27 ± 1.61 |
+| [AIDE](https://github.com/wecoai/aideml) | llama-3.1-405b-instruct | 2024-10-08 | 0.276 ± 0.541 | 4.55 ± -- |
 
 
 ## Benchmarking
@@ -175,7 +197,15 @@ It's possible to rank existing results for a particular split and competition ca
 mlebench rank  --split-type <split type> --competition-category <category>
 ```
 
-This saves normalized scores for each competition plus overall ranking in separate files. See more information by running `mlebench rank --help`.
+By default, `mlebench rank` will calculate rankings for Low Tabular split.
+
+You can also exclude from calculations those agents that don't have enough competition entries, e.g.:
+```console
+mlebench rank --competition-category all --strict --max-competitions-missed 10
+```
+This is the command used to calculate overall leaderboard for Low split above.
+
+This command saves normalized scores for each competition plus overall ranking in separate files. See more information by running `mlebench rank --help`.
 
 ## Environment
 

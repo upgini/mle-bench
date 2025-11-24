@@ -165,7 +165,7 @@ def main():
     parser_rank.add_argument(
         "--competition-category",
         type=str,
-        help="Competition category to filter (e.g., Tabular)",
+        help="Competition category to filter (e.g., Tabular). Use 'all' for every category in the split.",
         default="Tabular",
     )
     parser_rank.add_argument(
@@ -185,6 +185,30 @@ def main():
         type=str,
         help="Path to sample submissions grading report JSON file",
         default=str(repo_dir / "runs" / "sample-submissions" / "grading_report.json"),
+    )
+    parser_rank.add_argument(
+        "--strict",
+        action="store_true",
+        help=(
+            "Exclude agents that do not have results for every competition with sample submission scores "
+            "available in the selected split/category."
+        ),
+        default=False,
+    )
+    parser_rank.add_argument(
+        "--max-competitions-missed",
+        type=int,
+        default=0,
+        help=(
+            "Maximum number of competition results an experiment may miss when --strict is enabled "
+            "before being excluded from the overall ranking."
+        ),
+    )
+    parser_rank.add_argument(
+        "--dry-run",
+        action="store_true",
+        default=False,
+        help="Skip writing CSVs and print the overall rankings DataFrame to stdout.",
     )
 
     # Dev tools sub-parser
@@ -296,6 +320,9 @@ def main():
             experiment_agents_path=experiment_agents_path,
             output_dir=output_dir_path,
             sample_report_path=sample_report_path,
+            strict=args.strict,
+            max_competitions_missed=args.max_competitions_missed,
+            dry_run=args.dry_run,
         )
 
 
