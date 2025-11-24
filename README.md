@@ -47,26 +47,26 @@ This normalization ensures scores are comparable across competitions with differ
 
 ### Low Split Overall Leaderboard
 
-The table below shows the overall Low split leaderboard for all competition categories. It is ranked by normalized score, with any medal score added for reference.
+The table below shows the overall Low split leaderboard for all competition categories. It is ranked by normalized score, with any medal score added for reference. The any medal score is computed uniformly across all entries and might slightly differ from the values added by participants by hand.
 
 | Agent | LLM(s) used | Date | Normalized Score (Mean ± Std) | Any Medal % (Mean ± Std) |
 | --- | --- | --- | --- | --- |
-| [FM Agent](https://github.com/baidubce/FM-Agent) | Gemini-2.5-Pro | 2025-10-10 | 0.889 ± 0.198 | 62.12 ± 3.03 |
-| [Thesis](https://thesislabs.ai) | gpt-5-codex | 2025-11-10 | 0.881 ± 0.212 | 65.15 ± 2.14 |
-| [Operand](https://operand.com) ensemble | gpt-5 (low verbosity/effort) | 2025-10-06 | 0.867 ± 0.189 | 63.64 ± 5.92 |
-| [R&D-Agent](https://github.com/microsoft/RD-Agent) | o1-preview | 2025-05-14 | 0.859 ± 0.194 | 48.18 ± 1.10 |
-| [AIDE](https://github.com/wecoai/aideml) | o1-preview | 2024-10-08 | 0.838 ± 0.234 | 34.30 ± 2.40 |
-| [Neo](https://heyneo.so/) multi-agent | undisclosed | 2025-07-28 | 0.761 ± 0.340 | 48.48 ± 1.52 |
-| [InternAgent](https://github.com/Alpha-Innovator/InternAgent/) | deepseek-r1 | 2025-09-12 | 0.740 ± 0.826 | 62.12 ± 3.03 |
-| [R&D-Agent](https://github.com/microsoft/RD-Agent) | gpt-5 | 2025-09-26 | 0.710 ± 0.432 | 68.18 ± 2.62 |
-| [R&D-Agent](https://github.com/microsoft/RD-Agent) | o3 + GPT-4.1 | 2025-08-15 | 0.705 ± 0.690 | 51.52 ± 4.00 |
-| [AIDE](https://github.com/wecoai/aideml) | gpt-4o-2024-08-06 | 2024-10-08 | 0.338 ± 1.702 | 19.0 ± 1.3 |
-| [AIDE](https://github.com/wecoai/aideml) | claude-3-5-sonnet-20240620 | 2024-10-08 | 0.299 ± 1.395 | 19.40 ± 4.90 |
-| [AIDE](https://github.com/wecoai/aideml) | llama-3.1-405b-instruct | 2024-10-08 | 0.207 ± 0.741 | 8.30 ± 2.60 |
-| [ML-Master](https://github.com/zeroxleo/ML-Master) | deepseek-r1 | 2025-06-17 | -1.374 ± 10.163 | 48.50 ± 1.50 |
-| [CAIR](https://research.google/teams/cloud-ai-research/) MLE-STAR-Pro | Gemini-2.5-Pro | 2025-11-03 | -1.957 ± 12.089 | 66.67 ± 1.52 |
-| OpenHands | gpt-4o-2024-08-06 | 2024-10-08 | -3.236 ± 16.211 | 11.50 ± 3.40 |
-| MLAB | gpt-4o-2024-08-06 | 2024-10-08 | -216710652504.967 ± 969159500898.699 | 4.20 ± 1.50 |
+| [FM Agent](https://github.com/baidubce/FM-Agent) | Gemini-2.5-Pro | 2025-10-10 | 0.909 ± 0.201 | 62.12 ± 2.14 |
+| [InternAgent](https://github.com/Alpha-Innovator/InternAgent/) | deepseek-r1 | 2025-09-12 | 0.893 ± 0.264 | 62.12 ± 4.29 |
+| [Thesis](https://thesislabs.ai) | gpt-5-codex | 2025-11-10 | 0.886 ± 0.218 | 65.15 ± 2.14 |
+| [Operand](https://operand.com) ensemble | gpt-5 (low verbosity/effort) | 2025-10-06 | 0.883 ± 0.194 | 63.64 ± 0.00 |
+| [R&D-Agent](https://github.com/microsoft/RD-Agent) | o1-preview | 2025-05-14 | 0.880 ± 0.199 | 48.18 ± 1.29 |
+| [ML-Master](https://github.com/zeroxleo/ML-Master) | deepseek-r1 | 2025-06-17 | 0.864 ± 0.311 | 48.48 ± 2.14 |
+| [AIDE](https://github.com/wecoai/aideml) | o1-preview | 2024-10-08 | 0.856 ± 0.236 | 34.09 ± 10.33 |
+| [R&D-Agent](https://github.com/microsoft/RD-Agent) | o3 + GPT-4.1 | 2025-08-15 | 0.837 ± 0.321 | 51.52 ± 5.67 |
+| [CAIR](https://research.google/teams/cloud-ai-research/) MLE-STAR-Pro | Gemini-2.5-Pro | 2025-11-03 | 0.822 ± 0.411 | 66.67 ± 2.14 |
+| [R&D-Agent](https://github.com/microsoft/RD-Agent) | gpt-5 | 2025-09-26 | 0.746 ± 0.428 | 68.18 ± 3.71 |
+| [Neo](https://heyneo.so/) multi-agent | undisclosed | 2025-07-28 | 0.699 ± 0.382 | 48.48 ± 2.14 |
+| [AIDE](https://github.com/wecoai/aideml) | gpt-4o-2024-08-06 | 2024-10-08 | 0.661 ± 0.334 | 18.51 ± 2.95 |
+| [AIDE](https://github.com/wecoai/aideml) | claude-3-5-sonnet-20240620 | 2024-10-08 | 0.505 ± 0.584 | 8.33 ± 10.22 |
+| OpenHands | gpt-4o-2024-08-06 | 2024-10-08 | 0.430 ± 0.392 | 6.82 ± 4.82 |
+| MLAB | gpt-4o-2024-08-06 | 2024-10-08 | 0.299 ± 0.426 | 2.27 ± 1.61 |
+| [AIDE](https://github.com/wecoai/aideml) | llama-3.1-405b-instruct | 2024-10-08 | 0.276 ± 0.541 | 4.55 ± -- |
 
 
 ## Benchmarking
