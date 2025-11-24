@@ -1,9 +1,9 @@
 from pathlib import Path
 
-from mlebench.rank import collect_rankings
+from mlebench.rank import collect_rankings_data
 
 
-def test_collect_rankings_dry_run_prints_low_tabular(tmp_path):
+def test_collect_rankings_data_returns_results():
     repo_dir = Path(__file__).resolve().parents[2]
     run_group_experiments = repo_dir / "runs" / "run_group_experiments.csv"
     runs_dir = repo_dir / "runs"
@@ -12,7 +12,7 @@ def test_collect_rankings_dry_run_prints_low_tabular(tmp_path):
     experiment_agents = repo_dir / "runs" / "experiment_agents.csv"
     sample_report = repo_dir / "runs" / "sample-submissions" / "grading_report.json"
 
-    collect_rankings(
+    results = collect_rankings_data(
         run_group_experiments_path=run_group_experiments,
         runs_dir=runs_dir,
         splits_dir=splits_dir,
@@ -20,11 +20,10 @@ def test_collect_rankings_dry_run_prints_low_tabular(tmp_path):
         split_type="low",
         competition_category="Tabular",
         experiment_agents_path=experiment_agents,
-        output_dir=tmp_path,
         sample_report_path=sample_report,
-        strict=False,
-        max_competitions_missed=0,
-        dry_run=True,
     )
 
-    assert True
+    assert results is not None
+    assert len(results.competition_stats) > 0
+    assert set(results.competition_stats.keys()).issubset(set(results.competitions))
+    assert not results.final_results.empty

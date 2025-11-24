@@ -1,5 +1,6 @@
 import json
 import re
+from dataclasses import dataclass
 from logging import Logger
 from pathlib import Path
 from typing import List
@@ -9,6 +10,13 @@ import pandas as pd
 from mlebench.utils import get_logger, read_csv
 
 logger = get_logger(__name__)
+
+
+@dataclass
+class RankingResults:
+    competitions: list[str]
+    competition_stats: dict[str, pd.DataFrame]
+    final_results: pd.DataFrame
 
 
 def _safe_path_component(value: str) -> str:
@@ -272,7 +280,7 @@ def aggregate_scores(rank_series_list: list[pd.Series], name: str) -> pd.DataFra
     return rank_df
 
 
-def collect_rankings(
+def collect_rankings_data(
     run_group_experiments_path: Path,
     runs_dir: Path,
     splits_dir: Path,
@@ -280,12 +288,10 @@ def collect_rankings(
     split_type: str,
     competition_category: str,
     experiment_agents_path: Path,
-    output_dir: Path,
     sample_report_path: Path,
     strict: bool = False,
     max_competitions_missed: int = 0,
-    dry_run: bool = False,
-):
+) -> RankingResults | None:
     sample_reports = load_sample_reports(sample_report_path, logger)
 
     # Load competitions from configured split and category
@@ -302,20 +308,6 @@ def collect_rankings(
         return
     logger.info(f"Competitions to evaluate: {competitions}")
 
-    split_dirname = _safe_path_component(split_type)
-    category_dirname = _safe_path_component(competition_category)
-    competition_results_dir = output_dir / split_dirname / category_dirname / "competition_results"
-    base_output_dir = competition_results_dir.parent
-
-    if dry_run:
-        logger.info(
-            "Dry run enabled; skipping file writes. Final rankings will be printed to stdout."
-        )
-    else:
-        output_dir.mkdir(parents=True, exist_ok=True)
-        competition_results_dir.mkdir(parents=True, exist_ok=True)
-        logger.info(f"Writing results under {base_output_dir}")
-
     # Read experiment to run_group mapping
     experiment_groups = read_csv(run_group_experiments_path)
     logger.info(f"Found {len(experiment_groups)} experiment-run_group mappings")
@@ -326,6 +318,7 @@ def collect_rankings(
 
     # Collect results for each tabular competition
     rank_series_list: list[pd.Series] = []
+    competition_stats: dict[str, pd.DataFrame] = {}
 
     for competition_id in competitions:
         logger.info(f"Processing competition: {competition_id}")
@@ -347,15 +340,8 @@ def collect_rankings(
         if stats_df is None:
             continue
 
-        # Save per-competition CSV (without agent descriptions) unless dry run
-        if dry_run:
-            logger.info("Dry run: skipping write for competition %s", competition_id)
-        else:
-            competition_output = competition_results_dir / f"{competition_id}.csv"
-            stats_df.to_csv(competition_output, index=False)
-            logger.info(f"Saved results for {competition_id} to {competition_output}")
+        competition_stats[competition_id] = stats_df
 
-        # Collect ranks for overall ranking
         rank_series_list.append(
             stats_df.set_index("experiment_id")["mean_normalized_score"].rename(competition_id)
         )
@@ -395,17 +381,87 @@ def collect_rankings(
         drop=True
     )
 
+    return RankingResults(
+        competitions=competitions,
+        competition_stats=competition_stats,
+        final_results=final_results,
+    )
+
+
+def save_rankings_results(
+    ranking_results: RankingResults,
+    output_dir: Path,
+    split_type: str,
+    competition_category: str,
+    dry_run: bool = False,
+):
+    split_dirname = _safe_path_component(split_type)
+    category_dirname = _safe_path_component(competition_category)
+    competition_results_dir = output_dir / split_dirname / category_dirname / "competition_results"
+    base_output_dir = competition_results_dir.parent
+
     if dry_run:
         logger.info(
-            final_results[
+            "Dry run enabled; skipping file writes. Final rankings will be printed to stdout."
+        )
+        for competition_id in ranking_results.competition_stats:
+            logger.info("Dry run: skipping write for competition %s", competition_id)
+        logger.info(
+            ranking_results.final_results[
                 ["experiment_id", "mean_normalized_score", "mean_medal_pct", "sem_medal_pct"]
             ]
         )
-    else:
-        # Save final mean ranks CSV
-        final_output = base_output_dir / "overall_ranks.csv"
-        final_results.to_csv(final_output, index=False)
-        logger.info(f"Saved final ranking to {final_output}")
+        return
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+    competition_results_dir.mkdir(parents=True, exist_ok=True)
+    logger.info(f"Writing results under {base_output_dir}")
+
+    for competition_id, stats_df in ranking_results.competition_stats.items():
+        competition_output = competition_results_dir / f"{competition_id}.csv"
+        stats_df.to_csv(competition_output, index=False)
+        logger.info(f"Saved results for {competition_id} to {competition_output}")
+
+    final_output = base_output_dir / "overall_ranks.csv"
+    ranking_results.final_results.to_csv(final_output, index=False)
+    logger.info(f"Saved final ranking to {final_output}")
+
+
+def collect_rankings(
+    run_group_experiments_path: Path,
+    runs_dir: Path,
+    splits_dir: Path,
+    competition_categories_path: Path,
+    split_type: str,
+    competition_category: str,
+    experiment_agents_path: Path,
+    output_dir: Path,
+    sample_report_path: Path,
+    strict: bool = False,
+    max_competitions_missed: int = 0,
+    dry_run: bool = False,
+):
+    ranking_results = collect_rankings_data(
+        run_group_experiments_path=run_group_experiments_path,
+        runs_dir=runs_dir,
+        splits_dir=splits_dir,
+        competition_categories_path=competition_categories_path,
+        split_type=split_type,
+        competition_category=competition_category,
+        experiment_agents_path=experiment_agents_path,
+        sample_report_path=sample_report_path,
+        strict=strict,
+        max_competitions_missed=max_competitions_missed,
+    )
+    if ranking_results is None:
+        return
+    save_rankings_results(
+        ranking_results=ranking_results,
+        output_dir=output_dir,
+        split_type=split_type,
+        competition_category=competition_category,
+        dry_run=dry_run,
+    )
 
 
 def exclude_agents_with_missing_results(
