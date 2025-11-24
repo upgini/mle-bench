@@ -1,6 +1,6 @@
 # MLE-bench tabular
 
-This is a fork of [MLE-bench](https://github.com/openai/mle-bench) that compares agent performance on tabular data. It uses exactly the same setup and differs just in the leaderboard view. We focus on tabular tasks and use normalized score instead of medal percentage to compare differently scaled scores. The leaderboard is recomputed upon updating submitted runs from OpenAI repo.
+This is a fork of [MLE-bench](https://github.com/openai/mle-bench) that compares agent performance on tabular data. It uses exactly the same setup and differs just in the leaderboard view. We focus on tabular tasks and use normalized score instead of medal percentage to compare differently scaled scores. The leaderboard is [recomputed](#ranking-across-competition-categories) upon updating submitted runs from OpenAI repo.
 
 ### Tabular Leaderbord (Lite Split)
 
@@ -197,7 +197,15 @@ It's possible to rank existing results for a particular split and competition ca
 mlebench rank  --split-type <split type> --competition-category <category>
 ```
 
-This saves normalized scores for each competition plus overall ranking in separate files. See more information by running `mlebench rank --help`.
+By default, `mlebench rank` will calculate rankings for Low Tabular split.
+
+You can also exclude from calculations those agents that don't have enough competition entries, e.g.:
+```console
+mlebench rank --competition-category all --strict --max-competitions-missed 10
+```
+This is the command used to calculate overall leaderboard for Low split above.
+
+This command saves normalized scores for each competition plus overall ranking in separate files. See more information by running `mlebench rank --help`.
 
 ## Environment
 
