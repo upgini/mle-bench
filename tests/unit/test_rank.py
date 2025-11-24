@@ -18,7 +18,7 @@ def test_collect_rankings_data_returns_results():
         splits_dir=splits_dir,
         competition_categories_path=competition_categories,
         split_type="low",
-        competition_category="Tabular",
+        competition_category="all",
         experiment_agents_path=experiment_agents,
         sample_report_path=sample_report,
     )

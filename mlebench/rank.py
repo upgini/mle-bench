@@ -253,7 +253,9 @@ def score_competition_results(
         )
         return None
 
-    results_df["normalized_score"] = (sample_score - results_df["score"]) / denominator
+    results_df["normalized_score"] = ((sample_score - results_df["score"]) / denominator).clip(
+        lower=-1.2, upper=1.2
+    )
 
     stats_df = results_df.groupby("experiment_id", group_keys=True).agg(
         mean_score=("score", "mean"),
