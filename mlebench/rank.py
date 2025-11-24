@@ -169,7 +169,7 @@ def get_any_medal_results(
         )
         if not reports_df.empty:
             medals = reports_df.groupby("competition_id").agg(any_medal=("any_medal", "median"))
-            medal_pct = medals.mean()
+            medal_pct = medals.reindex(competition_ids).fillna(0).mean(axis=None)
             results.append({"run_group": run_group, "medal_pct": medal_pct})
         else:
             results.append({"run_group": run_group, "medal_pct": 0.0})
@@ -182,13 +182,12 @@ def get_any_medal_results(
 
     # Merge with experiment groups
     results_df = experiment_groups.merge(results_df, how="left", on="run_group")
-    results_df = results_df.groupby("experiment_id").agg(
-        mean_medal_pct=("medal_pct", "mean"),
-        std_medal_pct=("medal_pct", "std"),
+    results_mean = results_df.groupby("experiment_id")["medal_pct"].mean().rename("mean_medal_pct")
+    results_sem = (
+        results_df.groupby("experiment_id")["medal_pct"].sem(ddof=2).rename("sem_medal_pct")
     )
-
+    results_df = pd.concat([results_mean, results_sem], axis=1)
     results_df = results_df.reset_index()
-
     return results_df
 
 
@@ -397,7 +396,11 @@ def collect_rankings(
     )
 
     if dry_run:
-        print(final_results[["experiment_id", "mean_normalized_score", "mean_medal_pct"]])
+        logger.info(
+            final_results[
+                ["experiment_id", "mean_normalized_score", "mean_medal_pct", "sem_medal_pct"]
+            ]
+        )
     else:
         # Save final mean ranks CSV
         final_output = base_output_dir / "overall_ranks.csv"
