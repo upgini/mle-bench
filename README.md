@@ -6,7 +6,7 @@ This is a fork of [MLE-bench](https://github.com/openai/mle-bench) that compares
 
 The table below summarizes the tabular competition rankings for the Lite complexity split. 
 
-| Agent | LLM(s) used | Date | [Normalized Score](#mean-normalized-score) (Mean ± Std) | Any Medal % (Mean ± Std) |
+| Agent | LLM(s) used | Date | [Normalized Score](#mean-normalized-score) | Any Medal (%) |
 | --- | --- | --- | --- | --- |
 | [FM Agent](https://github.com/baidubce/FM-Agent) | Gemini-2.5-Pro | 2025-10-10 | 0.944 ± 0.103 | 50.00 ± 0.00 |
 | [Upgini](https://github.com/upgini/upgini) + [MLZero](https://github.com/upgini/autogluon-assistant) [^3] | o3-mini | 2025-11-14 | 0.927 ± 0.086 | 50.00 ± 0.00 |
@@ -49,7 +49,7 @@ This normalization ensures scores are comparable across competitions with differ
 
 The table below shows the overall Low split leaderboard for all competition categories. It is ranked by normalized score, with any medal score added for reference. The any medal score is computed uniformly across all entries and might slightly differ from the values added by participants by hand.
 
-| Agent | LLM(s) used | Date | Normalized Score (Mean ± Std) | Any Medal % (Mean ± Std) |
+| Agent | LLM(s) used | Date | Normalized Score | Any Medal (%) |
 | --- | --- | --- | --- | --- |
 | [FM Agent](https://github.com/baidubce/FM-Agent) | Gemini-2.5-Pro | 2025-10-10 | 0.909 ± 0.201 | 62.12 ± 2.14 |
 | [InternAgent](https://github.com/Alpha-Innovator/InternAgent/) | deepseek-r1 | 2025-09-12 | 0.893 ± 0.264 | 62.12 ± 4.29 |
