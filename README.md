@@ -1,5 +1,7 @@
 # MLE-bench tabular
 
+[![Open in HF Spaces](https://huggingface.co/datasets/huggingface/badges/resolve/main/open-in-hf-spaces-md-dark.svg)](https://huggingface.co/spaces/Upgini/mle-bench-tabular)
+
 This is a fork of [MLE-bench](https://github.com/openai/mle-bench) that compares agent performance on tabular data. It uses exactly the same setup and differs just in the leaderboard view. We focus on tabular tasks and use normalized score instead of medal percentage to compare differently scaled scores. The leaderboard is [recomputed](#ranking-across-competition-categories) upon updating submitted runs from OpenAI repo.
 
 ### Tabular Leaderbord (Lite Split)
