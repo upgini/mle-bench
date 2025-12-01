@@ -71,6 +71,24 @@ The table below shows the overall Low split leaderboard for all competition cate
 | [AIDE](https://github.com/wecoai/aideml) | llama-3.1-405b-instruct | 2024-10-08 | 0.276 ± 0.541 | 4.55 ± -- |
 
 
+### Producing Medal Scores for the Leaderboard
+
+To produce the scores for the leaderboard, please organize your grading reports
+in the `runs/` folder organized by run groups, with one grading report per run
+group. Identify the run groups for your submission in
+`runs/run_group_experiments.csv` with an experiment id. Then run
+
+```bash
+uv run python experiments/aggregate_grading_reports.py --experiment-id <exp_id> --split low
+uv run python experiments/aggregate_grading_reports.py --experiment-id <exp_id> --split medium
+uv run python experiments/aggregate_grading_reports.py --experiment-id <exp_id> --split high
+uv run python experiments/aggregate_grading_reports.py --experiment-id <exp_id> --split split75
+```
+
+Report the mean and standard error of the mean (SEM) for each of the splits on
+the reported `any_medal_percentage` metric. The `--split75` flag corresponds to
+the `All (%)` column.
+
 ## Benchmarking
 
 This section describes a canonical setup for comparing scores on MLE-bench. We recommend the following:
@@ -286,6 +304,9 @@ catalogued below:
 - **smartphone-decimeter-2022**: The public test `span_log.nmea` files leak
   information that makes achieving a perfect score trivial.
   [#93](https://github.com/openai/mle-bench/issues/93)
+- **hubmap-kidney-segmentation**: The public test `{image_id}.json` files leak
+  information that makes achieving a close-to-perfect score trivial. They should
+  be removed.
 
 ## Authors
 
