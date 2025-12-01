@@ -4,29 +4,31 @@
 
 This is a fork of [MLE-bench](https://github.com/openai/mle-bench) that compares agent performance on tabular data. It uses exactly the same setup and differs just in the leaderboard view. We focus on tabular tasks and use normalized score instead of medal percentage to compare differently scaled scores. The leaderboard is [recomputed](#ranking-across-competition-categories) upon updating submitted runs from OpenAI repo.
 
-### Tabular Leaderbord (Lite Split)
+### Tabular Leaderbord (Low Split)
 
-The table below summarizes the tabular competition rankings for the Lite complexity split. 
+The table below summarizes the tabular competition rankings for the Low complexity split. 
 
 | Agent | LLM(s) used | Date | [Normalized Score](#mean-normalized-score) | Any Medal (%) |
 | --- | --- | --- | --- | --- |
 | [FM Agent](https://github.com/baidubce/FM-Agent) | Gemini-2.5-Pro | 2025-10-10 | 0.944 ± 0.103 | 50.00 ± 0.00 |
 | [Upgini](https://github.com/upgini/upgini) + [MLZero](https://github.com/upgini/autogluon-assistant) [^3] | o3-mini | 2025-11-14 | 0.927 ± 0.086 | 50.00 ± 0.00 |
 | [MLZero](https://github.com/autogluon/autogluon-assistant) | o3-mini | 2025-11-14 | 0.926 ± 0.088 | 50.00 ± 0.00 |
+| [CAIR](https://research.google/teams/cloud-ai-research/) MLE-STAR-Pro-1.5  | Gemini-2.5-Pro | 2025-11-25 | 0.903 ± 0.130 | 50.00 ± 0.00 |
 | [Thesis](https://thesislabs.ai) | gpt-5-codex | 2025-11-10 | 0.891 ± 0.150 | 50.00 ± 0.00 |
-| [AIDE](https://github.com/wecoai/aideml) | claude-3-5-sonnet-20240620 | 2024-10-08 | 0.874 ± 0.142 | 20.80 ± 21.20 |
-| [AIDE](https://github.com/wecoai/aideml) | gpt-4o-2024-08-06 | 2024-10-08 | 0.857 ± 0.145 | 33.30 ± 23.60 |
+| [AIDE](https://github.com/wecoai/aideml) | claude-3-5-sonnet-20240620 | 2024-10-08 | 0.874 ± 0.142 | 41.67 ± 8.33 |
 | [R&D-Agent](https://github.com/microsoft/RD-Agent) | o1-preview | 2025-05-14 | 0.818 ± 0.306 | 50.00 ± 0.00 |
+| [AIDE](https://github.com/wecoai/aideml) | gpt-4o-2024-08-06 | 2024-10-08 | 0.808 ± 0.136 | 36.84 ± 2.79 |
 | [R&D-Agent](https://github.com/microsoft/RD-Agent) | o3 + GPT-4.1 | 2025-08-15 | 0.793 ± 0.371 | 50.00 ± 0.00 |
-| [AIDE](https://github.com/wecoai/aideml) | o1-preview | 2024-10-08 | 0.783 ± 0.421 | 40.00 ± 11.50 |
+| [AIDE](https://github.com/wecoai/aideml) | o1-preview | 2024-10-08 | 0.783 ± 0.421 | 40.00 ± 3.80 |
 | [Operand](https://operand.com) ensemble | gpt-5 (low verbosity/effort) | 2025-10-06 | 0.780 ± 0.282 | 50.00 ± 0.00 |
 | [CAIR](https://research.google/teams/cloud-ai-research/) MLE-STAR-Pro | Gemini-2.5-Pro | 2025-11-03 | 0.727 ± 0.532 | 50.00 ± 0.00 |
 | [Neo](https://heyneo.so/) multi-agent | undisclosed | 2025-07-28 | 0.723 ± 0.483 | 50.00 ± 0.00 |
 | [InternAgent](https://github.com/Alpha-Innovator/InternAgent/) | deepseek-r1 | 2025-09-12 | 0.711 ± 0.518 | 50.00 ± 0.00 |
-| [ML-Master](https://github.com/zeroxleo/ML-Master) | deepseek-r1 | 2025-06-17 | 0.687 ± 0.600 | 41.70 ± 11.80 |
+| [ML-Master](https://github.com/zeroxleo/ML-Master) | deepseek-r1 | 2025-06-17 | 0.687 ± 0.600 | 41.67 ± 8.33 |
 | [R&D-Agent](https://github.com/microsoft/RD-Agent) | gpt-5 | 2025-09-26 | 0.497 ± 0.574 | 50.00 ± 0.00 |
-| [AIDE](https://github.com/wecoai/aideml) | llama-3.1-405b-instruct | 2024-10-08 | 0.328 ± 1.032 | 25.00 ± -- |
-| MLAB | gpt-4o-2024-08-06 | 2024-10-08 | -0.110 ± 0.392 | 12.50 ± 8.80 |
+| OpenHands | gpt-4o-2024-08-06 | 2024-10-08 | 0.342 ± 0.605 | 41.67 ± 8.33 |
+| [AIDE](https://github.com/wecoai/aideml) | llama-3.1-405b-instruct | 2024-10-08 | 0.328 ± 1.032 | 35.00 ± 10.00 |
+| MLAB | gpt-4o-2024-08-06 | 2024-10-08 | -0.110 ± 0.392 | 15.63 ± 4.57 |
 
 [^3]: A fork with added integration with Upgini in the data processing step
 
@@ -49,27 +51,46 @@ This normalization ensures scores are comparable across competitions with differ
 
 ### Low Split Overall Leaderboard
 
-The table below shows the overall Low split leaderboard for all competition categories. It is ranked by normalized score, with any medal score added for reference. The any medal score is computed uniformly across all entries and might slightly differ from the values added by participants by hand.
+The table below shows the overall Low split leaderboard for all competition categories. It is ranked by normalized score, with any medal score added for reference. 
 
 | Agent | LLM(s) used | Date | Normalized Score | Any Medal (%) |
 | --- | --- | --- | --- | --- |
-| [FM Agent](https://github.com/baidubce/FM-Agent) | Gemini-2.5-Pro | 2025-10-10 | 0.909 ± 0.201 | 62.12 ± 2.14 |
-| [InternAgent](https://github.com/Alpha-Innovator/InternAgent/) | deepseek-r1 | 2025-09-12 | 0.893 ± 0.264 | 62.12 ± 4.29 |
-| [Thesis](https://thesislabs.ai) | gpt-5-codex | 2025-11-10 | 0.886 ± 0.218 | 65.15 ± 2.14 |
+| [CAIR](https://research.google/teams/cloud-ai-research/) MLE-STAR-Pro-1.5  | Gemini-2.5-Pro | 2025-11-25 | 0.940 ± 0.149 | 68.18 ± 2.62 |
+| [FM Agent](https://github.com/baidubce/FM-Agent) | Gemini-2.5-Pro | 2025-10-10 | 0.909 ± 0.201 | 62.12 ± 1.52 |
+| [InternAgent](https://github.com/Alpha-Innovator/InternAgent/) | deepseek-r1 | 2025-09-12 | 0.893 ± 0.264 | 62.12 ± 3.03 |
+| [Thesis](https://thesislabs.ai) | gpt-5-codex | 2025-11-10 | 0.886 ± 0.218 | 65.15 ± 1.52 |
 | [Operand](https://operand.com) ensemble | gpt-5 (low verbosity/effort) | 2025-10-06 | 0.883 ± 0.194 | 63.64 ± 0.00 |
-| [R&D-Agent](https://github.com/microsoft/RD-Agent) | o1-preview | 2025-05-14 | 0.880 ± 0.199 | 48.18 ± 1.29 |
-| [ML-Master](https://github.com/zeroxleo/ML-Master) | deepseek-r1 | 2025-06-17 | 0.864 ± 0.311 | 48.48 ± 2.14 |
-| [AIDE](https://github.com/wecoai/aideml) | o1-preview | 2024-10-08 | 0.856 ± 0.236 | 34.09 ± 10.33 |
-| [R&D-Agent](https://github.com/microsoft/RD-Agent) | o3 + GPT-4.1 | 2025-08-15 | 0.837 ± 0.321 | 51.52 ± 5.67 |
-| [CAIR](https://research.google/teams/cloud-ai-research/) MLE-STAR-Pro | Gemini-2.5-Pro | 2025-11-03 | 0.822 ± 0.411 | 66.67 ± 2.14 |
-| [R&D-Agent](https://github.com/microsoft/RD-Agent) | gpt-5 | 2025-09-26 | 0.746 ± 0.428 | 68.18 ± 3.71 |
-| [Neo](https://heyneo.so/) multi-agent | undisclosed | 2025-07-28 | 0.699 ± 0.382 | 48.48 ± 2.14 |
-| [AIDE](https://github.com/wecoai/aideml) | gpt-4o-2024-08-06 | 2024-10-08 | 0.661 ± 0.334 | 18.51 ± 2.95 |
-| [AIDE](https://github.com/wecoai/aideml) | claude-3-5-sonnet-20240620 | 2024-10-08 | 0.505 ± 0.584 | 8.33 ± 10.22 |
-| OpenHands | gpt-4o-2024-08-06 | 2024-10-08 | 0.430 ± 0.392 | 6.82 ± 4.82 |
-| MLAB | gpt-4o-2024-08-06 | 2024-10-08 | 0.299 ± 0.426 | 2.27 ± 1.61 |
-| [AIDE](https://github.com/wecoai/aideml) | llama-3.1-405b-instruct | 2024-10-08 | 0.276 ± 0.541 | 4.55 ± -- |
+| [R&D-Agent](https://github.com/microsoft/RD-Agent) | o1-preview | 2025-05-14 | 0.880 ± 0.199 | 48.18 ± 1.11 |
+| [ML-Master](https://github.com/zeroxleo/ML-Master) | deepseek-r1 | 2025-06-17 | 0.864 ± 0.311 | 48.48 ± 1.52 |
+| [AIDE](https://github.com/wecoai/aideml) | o1-preview | 2024-10-08 | 0.856 ± 0.236 | 35.91 ± 1.86 |
+| [R&D-Agent](https://github.com/microsoft/RD-Agent) | o3 + GPT-4.1 | 2025-08-15 | 0.837 ± 0.321 | 51.52 ± 4.01 |
+| [CAIR](https://research.google/teams/cloud-ai-research/) MLE-STAR-Pro | Gemini-2.5-Pro | 2025-11-03 | 0.822 ± 0.411 | 66.67 ± 1.52 |
+| [R&D-Agent](https://github.com/microsoft/RD-Agent) | gpt-5 | 2025-09-26 | 0.746 ± 0.428 | 68.18 ± 2.62 |
+| [Neo](https://heyneo.so/) multi-agent | undisclosed | 2025-07-28 | 0.699 ± 0.382 | 48.48 ± 1.52 |
+| [AIDE](https://github.com/wecoai/aideml) | gpt-4o-2024-08-06 | 2024-10-08 | 0.661 ± 0.334 | 18.55 ± 1.26 |
+| [AIDE](https://github.com/wecoai/aideml) | claude-3-5-sonnet-20240620 | 2024-10-08 | 0.505 ± 0.584 | 19.70 ± 1.52 |
+| OpenHands | gpt-4o-2024-08-06 | 2024-10-08 | 0.430 ± 0.392 | 12.12 ± 1.52 |
+| MLAB | gpt-4o-2024-08-06 | 2024-10-08 | 0.299 ± 0.426 | 4.55 ± 0.86 |
+| [AIDE](https://github.com/wecoai/aideml) | llama-3.1-405b-instruct | 2024-10-08 | 0.276 ± 0.541 | 10.23 ± 1.14 |
 
+
+### Producing Medal Scores for the Leaderboard
+
+To produce the scores for the leaderboard, please organize your grading reports
+in the `runs/` folder organized by run groups, with one grading report per run
+group. Identify the run groups for your submission in
+`runs/run_group_experiments.csv` with an experiment id. Then run
+
+```bash
+uv run python experiments/aggregate_grading_reports.py --experiment-id <exp_id> --split low
+uv run python experiments/aggregate_grading_reports.py --experiment-id <exp_id> --split medium
+uv run python experiments/aggregate_grading_reports.py --experiment-id <exp_id> --split high
+uv run python experiments/aggregate_grading_reports.py --experiment-id <exp_id> --split split75
+```
+
+Report the mean and standard error of the mean (SEM) for each of the splits on
+the reported `any_medal_percentage` metric. The `--split75` flag corresponds to
+the `All (%)` column.
 
 ## Benchmarking
 
@@ -286,6 +307,9 @@ catalogued below:
 - **smartphone-decimeter-2022**: The public test `span_log.nmea` files leak
   information that makes achieving a perfect score trivial.
   [#93](https://github.com/openai/mle-bench/issues/93)
+- **hubmap-kidney-segmentation**: The public test `{image_id}.json` files leak
+  information that makes achieving a close-to-perfect score trivial. They should
+  be removed.
 
 ## Authors
 

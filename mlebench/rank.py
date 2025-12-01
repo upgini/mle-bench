@@ -143,60 +143,37 @@ def get_competition_results(
 
 
 def get_any_medal_results(
-    runs_dir: Path, experiment_groups: pd.DataFrame, competition_ids: List[str], logger: Logger
+    experiment_groups: pd.DataFrame, split: str, competition_ids: list[str] = None
 ) -> pd.DataFrame:
+    from experiments.aggregate_grading_reports import grading_reports_from_experiment
+    from experiments.aggregate_grading_reports import main as aggregate_grading_reports_main
+
     results = []
 
-    # Get unique run groups from experiment_groups
-    run_groups = experiment_groups["run_group"].unique()
-
-    for run_group in run_groups:
-        run_group_dir = runs_dir / run_group
-        if not run_group_dir.exists() or not run_group_dir.is_dir():
+    experiment_ids = experiment_groups["experiment_id"].unique()
+    for experiment_id in experiment_ids:
+        reports = grading_reports_from_experiment(experiment_id)
+        try:
+            metrics = aggregate_grading_reports_main(
+                reports,
+                -1,
+                split,
+                pad_missing=False,
+                verbose=False,
+                competition_ids=competition_ids,
+            )
+        except ValueError as e:
+            logger.error(f"Error calculating any medal results for experiment {experiment_id}: {e}")
             continue
-
-        # Find grading report files
-        grading_reports = sorted(list(run_group_dir.glob("*grading_report*.json")))
-        if len(grading_reports) == 0:
-            continue
-
-        # Load the latest grading report
-        latest_report = grading_reports[-1]
-
-        data = json.loads(latest_report.read_text())
-        reports = data.get("competition_reports", [])
-        if isinstance(reports, dict):
-            reports = [reports]
-        reports_df = pd.DataFrame(
-            [
-                report
-                for report in reports
-                if report.get("competition_id") in competition_ids
-                and report.get("valid_submission")
-            ]
+        results.append(
+            {
+                "experiment_id": experiment_id,
+                "mean_medal_pct": metrics.metrics["any_medal_percentage"].mean,
+                "sem_medal_pct": metrics.metrics["any_medal_percentage"].standard_error,
+            }
         )
-        if not reports_df.empty:
-            medals = reports_df.groupby("competition_id").agg(any_medal=("any_medal", "median"))
-            medal_pct = medals.reindex(competition_ids).fillna(0).mean(axis=None)
-            results.append({"run_group": run_group, "medal_pct": medal_pct})
-        else:
-            results.append({"run_group": run_group, "medal_pct": 0.0})
 
-    if len(results) == 0:
-        logger.warning("No any medal results found")
-        return pd.DataFrame(columns=["run_group", "medal_pct"])
-
-    results_df = pd.DataFrame(results)
-
-    # Merge with experiment groups
-    results_df = experiment_groups.merge(results_df, how="left", on="run_group")
-    results_mean = results_df.groupby("experiment_id")["medal_pct"].mean().rename("mean_medal_pct")
-    results_sem = (
-        results_df.groupby("experiment_id")["medal_pct"].sem(ddof=2).rename("sem_medal_pct")
-    )
-    results_df = pd.concat([results_mean, results_sem], axis=1)
-    results_df = results_df.reset_index()
-    return results_df
+    return pd.DataFrame(results)
 
 
 def load_sample_reports(sample_report_path: Path, logger: Logger) -> dict[str, dict]:
@@ -372,7 +349,8 @@ def collect_rankings_data(
             max_competitions_missed,
         )
 
-    medal_df = get_any_medal_results(runs_dir, experiment_groups, competitions, logger)
+    # medal_df = get_any_medal_results(runs_dir, experiment_groups, competitions, logger)
+    medal_df = get_any_medal_results(experiment_groups, split_type, competitions)
 
     # Create final results DataFrame
     final_results = rank_df.merge(medal_df, on="experiment_id", how="left").reset_index(drop=True)
@@ -443,12 +421,15 @@ def collect_rankings(
     max_competitions_missed: int = 0,
     dry_run: bool = False,
 ):
+
+    real_split_type = "split75" if split_type == "all" else split_type
+
     ranking_results = collect_rankings_data(
         run_group_experiments_path=run_group_experiments_path,
         runs_dir=runs_dir,
         splits_dir=splits_dir,
         competition_categories_path=competition_categories_path,
-        split_type=split_type,
+        split_type=real_split_type,
         competition_category=competition_category,
         experiment_agents_path=experiment_agents_path,
         sample_report_path=sample_report_path,
