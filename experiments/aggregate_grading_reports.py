@@ -301,9 +301,17 @@ def select_seeds(
     return seeds[:num_seeds]
 
 
-def main(grading_reports: list[str], num_seeds: int, split: str, pad_missing: bool) -> None:
+def main(
+    grading_reports: list[str],
+    num_seeds: int,
+    split: str,
+    pad_missing: bool,
+    verbose: bool = True,
+    competition_ids: list[str] = None,
+) -> AggregateMetrics:
     competition_reports = get_competition_reports(grading_reports)
-    competition_ids = load_competition_ids(split)
+    if competition_ids is None:
+        competition_ids = load_competition_ids(split)
     grouped_competition_reports = build_complete_seeds(
         competition_reports, competition_ids, num_seeds, pad_missing=pad_missing
     )
@@ -313,12 +321,16 @@ def main(grading_reports: list[str], num_seeds: int, split: str, pad_missing: bo
     seed_metrics: list[SeedMetrics] = []
     for i, reports in enumerate(usable_seeds):
         seed_metric = calculate_metrics_for_a_seed(reports)
-        print(f"Seed {i + 1}: {seed_metric}")
+        if verbose:
+            print(f"Seed {i + 1}: {seed_metric}")
         seed_metrics.append(seed_metric)
 
     average_metrics = average_metrics_across_seeds(seed_metrics, len(competition_ids))
-    print("------\nAverage metrics across seeds:")
-    print(json.dumps(asdict(average_metrics), indent=2))
+    if verbose:
+        print("------\nAverage metrics across seeds:")
+        print(json.dumps(asdict(average_metrics), indent=2))
+
+    return average_metrics
 
 
 if __name__ == "__main__":
