@@ -155,7 +155,12 @@ def get_any_medal_results(
         reports = grading_reports_from_experiment(experiment_id)
         try:
             metrics = aggregate_grading_reports_main(
-                reports, -1, split, pad_missing=True, verbose=False, competition_ids=competition_ids
+                reports,
+                -1,
+                split,
+                pad_missing=False,
+                verbose=False,
+                competition_ids=competition_ids,
             )
         except ValueError as e:
             logger.error(f"Error calculating any medal results for experiment {experiment_id}: {e}")
