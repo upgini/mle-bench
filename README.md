@@ -51,7 +51,7 @@ This normalization ensures scores are comparable across competitions with differ
 
 ### Low Split Overall Leaderboard
 
-The table below shows the overall Low split leaderboard for all competition categories. It is ranked by normalized score, with any medal score added for reference. The any medal score is computed uniformly across all entries and might slightly differ from the values added by participants by hand.
+The table below shows the overall Low split leaderboard for all competition categories. It is ranked by normalized score, with any medal score added for reference. 
 
 | Agent | LLM(s) used | Date | Normalized Score | Any Medal (%) |
 | --- | --- | --- | --- | --- |
