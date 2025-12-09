@@ -163,8 +163,25 @@ def get_any_medal_results(
                 competition_ids=competition_ids,
             )
         except ValueError as e:
-            logger.error(f"Error calculating any medal results for experiment {experiment_id}: {e}")
-            continue
+            logger.warning(
+                f"Error calculating any medal results for experiment {experiment_id}: {e}"
+            )
+            try:
+                logger.warning(
+                    f"Calculating any medal results for experiment {experiment_id} with padding"
+                )
+                metrics = aggregate_grading_reports_main(
+                    reports,
+                    -1,
+                    split,
+                    pad_missing=True,
+                    verbose=False,
+                    competition_ids=competition_ids,
+                )
+            except ValueError as e:
+                logger.error(f"Not including results for experiment {experiment_id}: {e}")
+                continue
+
         results.append(
             {
                 "experiment_id": experiment_id,
