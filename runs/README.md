@@ -47,8 +47,11 @@ table below.
 | FM Agent                    | FM Agent, 24 hours, 64 vCPUs, 500GB of RAM, and 1 A800 GPU          |
 | MLE-STAR-Pro-1.0                    | CAIR MLE-STAR-Pro-1.0, 12 hours, 24 vCPUs, 220GB of RAM, and 1 V100 GPU          |
 | MLE-STAR-Pro-1.5                    | CAIR MLE-STAR-Pro-1.5, 24 hours, 24 vCPUs, 220GB of RAM, and 2 × A100-40GB GPUs       |
+| MLE-STAR-Pro-1.0                    | CAIR MLE-STAR-Pro-1.0, 12 hours, 24 vCPUs, 220GB of RAM, and 1 V100 GPU          |
+| MLE-STAR-Pro-1.5                    | CAIR MLE-STAR-Pro-1.5, 24 hours, 24 vCPUs, 220GB of RAM, and 2 × A100-40GB GPUs       |
 | AIRA-dojo | o3 on on AIRA-DOJO Greedy scaffolding , 24 hours, 24 vCPUs, 120GB of RAM and 1 H200 GPU |
 | thesis | gpt-5-codex yc sprint on custom scaffolding , 24 hours, 24 vCPUs, 170GB of RAM and 1 H100 GPU |
 | o3-mini-MLZero | o3-mini on MLZero (AutoGluon Assistant), 2 hours, 32 vCPUs, 128GB of RAM |
 | o3-mini-Upgini-MLZero | o3-mini on MLZero (AutoGluon Assistant) with Upgini feature enrichment,  2 hours, 32 vCPUs, 128GB of RAM |
 | Leeroo | Ensemble (Gemini-3-Pro-Preview, GPT-5, GPT-5-mini) 24 hours, 24 vCPUs, 150GB of RAM and 1 H100 GPU |
+| ML-Master-2.0                       | Deepseek-V3.2-Speciale on ML-Master-2.0 scaffolding, 24 hours, 36 vCPUs, 252GB of RAM and 2 x 4090-24GB GPU|
