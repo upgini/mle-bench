@@ -69,7 +69,7 @@ scipy==1.14.1
 seaborn==0.13.2
 segmentation-models-pytorch==0.3.4
 sentence-transformers==3.0.1
-sentencepiece==0.2.0
+sentencepiece==0.2.1
 sklearn-pandas==2.2.0
 spacy==3.7.6
 sympy==1.13.2
