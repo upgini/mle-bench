@@ -30,7 +30,7 @@ The table below summarizes the tabular competition rankings for the Low complexi
 | [InternAgent](https://github.com/Alpha-Innovator/InternAgent/) | deepseek-r1 | 2025-09-12 | 0.711 ± 0.518 | 50.00 ± 0.00 |
 | [ML-Master](https://github.com/zeroxleo/ML-Master) | deepseek-r1 | 2025-06-17 | 0.687 ± 0.600 | 41.67 ± 8.33 |
 | [R&D-Agent](https://github.com/microsoft/RD-Agent) | gpt-5 | 2025-09-26 | 0.497 ± 0.574 | 50.00 ± 0.00 |
-| [Leeroo](https://leeroo.com/) | Gemini-3-Pro-Preview[^4] | 2025-12-07 | 0.495 ± 0.572 |  50.00 ± 0.00[^2] |
+| [Leeroo](https://github.com/Leeroo-AI/kapso)| Gemini-3-Pro-Preview[^4] | 2025-12-07 | 0.495 ± 0.572 |  50.00 ± 0.00[^2] |
 | OpenHands | gpt-4o-2024-08-06 | 2024-10-08 | 0.342 ± 0.605 | 41.67 ± 8.33 |
 | [AIDE](https://github.com/wecoai/aideml) | llama-3.1-405b-instruct | 2024-10-08 | 0.328 ± 1.032 | 35.00 ± 10.00 |
 | MLAB | gpt-4o-2024-08-06 | 2024-10-08 | -0.110 ± 0.392 | 15.63 ± 4.57 |
@@ -79,7 +79,7 @@ The table below shows the overall Low split leaderboard for all competition cate
 | [R&D-Agent](https://github.com/microsoft/RD-Agent) | o3 + GPT-4.1 | 2025-08-15 | 0.837 ± 0.321 | 51.52 ± 4.01 |
 | [CAIR](https://research.google/teams/cloud-ai-research/) MLE-STAR-Pro | Gemini-2.5-Pro | 2025-11-03 | 0.822 ± 0.411 | 66.67 ± 1.52 |
 | [R&D-Agent](https://github.com/microsoft/RD-Agent) | gpt-5 | 2025-09-26 | 0.746 ± 0.428 | 68.18 ± 2.62 |
-| [Leeroo](https://leeroo.com/) | Gemini-3-Pro-Preview[^4] | 2025-12-07 | 0.716 ± 0.452 |  68.18 ± 2.62[^2] |
+| [Leeroo](https://github.com/Leeroo-AI/kapso) | Gemini-3-Pro-Preview[^4] | 2025-12-07 | 0.716 ± 0.452 |  68.18 ± 2.62[^2] |
 | OpenHands | gpt-4o-2024-08-06 | 2024-10-08 | 0.342 ± 0.605 | 41.67 ± 8.33 |
 | [Neo](https://heyneo.so/) multi-agent | undisclosed | 2025-07-28 | 0.699 ± 0.382 | 48.48 ± 1.52 |
 | [AIDE](https://github.com/wecoai/aideml) | gpt-4o-2024-08-06 | 2024-10-08 | 0.661 ± 0.334 | 18.55 ± 1.26 |
