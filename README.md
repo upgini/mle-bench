@@ -17,6 +17,7 @@ The table below summarizes the tabular competition rankings for the Low complexi
 | [ML-Master 2.0](https://github.com/sjtu-sai-agents/ML-Master) | Deepseek-V3.2-Speciale | 2025-12-16 | 0.927 ± 0.086 | 50.00 ± 0.00 | - |
 | [Upgini](https://github.com/upgini/upgini) + [MLZero](https://github.com/upgini/autogluon-assistant) [^3] | o3-mini | 2025-11-14 | 0.927 ± 0.086 | 50.00 ± 0.00 | - |
 | [MLZero](https://github.com/autogluon/autogluon-assistant) | o3-mini | 2025-11-14 | 0.926 ± 0.088 | 50.00 ± 0.00 | - |
+| [MLEvolve](https://github.com/InternScience/MLEvolve) | Gemini-3-Pro-Preview | 2026-02-14 | 0.906 ± 0.185 | 50.00 ± 0.00 | - |
 | [CAIR](https://research.google/teams/cloud-ai-research/) MLE-STAR-Pro-1.5  | Gemini-2.5-Pro | 2025-11-25 | 0.903 ± 0.130 | 50.00 ± 0.00 | - |
 | [Famou-Agent 2.0](https://github.com/baidubce/FM-Agent) | Gemini-2.5-Pro | 2025-12-27 | 0.897 ± 0.162 | 50.00 ± 0.00 | - |
 | [Thesis](https://thesislabs.ai) | gpt-5-codex | 2025-11-10 | 0.891 ± 0.150 | 50.00 ± 0.00 | - |
@@ -68,6 +69,7 @@ The table below shows the overall Low split leaderboard for all competition cate
 | Agent | LLM(s) used | Date | Normalized Score | Any Medal (%) | Known leakage[^5] |
 | --- | --- | --- | --- | --- | --- |
 | [PiEvolve](https://github.com/FractalAIResearchLabs/PiEvolve)<br>(Fractal AI Research) 24 hrs | Gemini-3-Pro-Preview[^4] | 2026-01-05 | 0.968 ± 0.140 | 80.30 ± 1.52[^2] | - |
+| [MLEvolve](https://github.com/InternScience/MLEvolve) | Gemini-3-Pro-Preview | 2026-02-14 | 0.963 ± 0.155 | 80.30 ± 1.52 | - |
 | [PiEvolve](https://github.com/FractalAIResearchLabs/PiEvolve)<br>(Fractal AI Research) 12 hrs | Gemini-3-Pro-Preview[^4] | 2026-01-05 | 0.956 ± 0.142 | 45.61 ± 0.88[^2] | - |
 | [Disarray](https://disarray.ai) | Ensemble (Claude-Opus-4.5, Claude-Sonnet-4.5, GPT-5.2-Codex, Gemini-3-Pro-Preview) | 2026-02-03 | 0.955 ± 0.130 | 90.01 ± 0.00 | ✓ |
 | [Famou-Agent](https://github.com/baidubce/FM-Agent) | Gemini-2.5-Pro | 2025-10-10 | 0.950 ± 0.132 | 75.76 ± 1.52 | - |
