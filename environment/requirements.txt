@@ -49,7 +49,7 @@ pillow==10.4.0
 plotly==5.24.0
 py7zr==0.22.0
 pyarrow==17.0.0
-pydicom==2.4.4
+pydicom==2.4.5
 pyocr==0.8.5
 pyparsing==3.1.4
 pypdf==4.3.1
