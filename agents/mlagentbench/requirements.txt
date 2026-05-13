@@ -45,7 +45,7 @@ opencv-python
 # llm
 openai==0.28
 anthropic
-langchain==0.2.10
+langchain==0.3.30
 langchain_anthropic
 sentencepiece
 spacy
