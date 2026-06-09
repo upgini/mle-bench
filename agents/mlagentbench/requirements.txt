@@ -25,7 +25,7 @@ pillow
 
 
 # common ml packages
-torch==2.2.0
+torch==2.8.0
 torchvision==0.17.0
 transformers
 scikit-learn
