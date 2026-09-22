@@ -175,7 +175,6 @@ def get_any_medal_results(
                 "experiment_id": experiment_id,
                 "mean_medal_pct": metrics.metrics["any_medal_percentage"].mean,
                 "sem_medal_pct": metrics.metrics["any_medal_percentage"].standard_error,
-                "medal_padded": medal_padded,
             }
         )
 
