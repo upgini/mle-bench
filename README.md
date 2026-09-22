@@ -13,7 +13,7 @@ The table below summarizes the tabular competition rankings for the Low complexi
 | [Famou-Agent](https://github.com/baidubce/FM-Agent) | Gemini-2.5-Pro | 2025-10-10 | 0.944 ± 0.103 | 50.00 ± 0.00 | - |
 | [PiEvolve](https://github.com/FractalAIResearchLabs/PiEvolve)<br>(Fractal AI Research) 24 hrs | Gemini-3-Pro-Preview[^4] | 2026-01-05 | 0.943 ± 0.123 | 50.00 ± 0.00[^2] | - |
 | [PiEvolve](https://github.com/FractalAIResearchLabs/PiEvolve)<br>(Fractal AI Research) 12 hrs | Gemini-3-Pro-Preview[^4] | 2026-01-05 | 0.938 ± 0.122 | 50.00 ± 0.00[^2] | - |
-| [Disarray](https://disarray.ai) | Ensemble (Claude-Opus-4.5, Claude-Sonnet-4.5, GPT-5.2-Codex, Gemini-3-Pro-Preview) | 2026-02-03 | 0.937 ± 0.138 | 75.00 ± 0.00 | ✓ |
+| [Disarray](https://disarray.ai) | Ensemble (Claude-Opus-4.5, Claude-Sonnet-4.5, GPT-5.2-Codex, Gemini-3-Pro-Preview) | 2026-02-03 | 0.937 ± 0.138 | 75.00 ± 0.00 | [✓](https://github.com/openai/mle-bench/pull/118) |
 | [ML-Master 2.0](https://github.com/sjtu-sai-agents/ML-Master) | Deepseek-V3.2-Speciale | 2025-12-16 | 0.927 ± 0.086 | 50.00 ± 0.00 | - |
 | [Upgini](https://github.com/upgini/upgini) + [MLZero](https://github.com/upgini/autogluon-assistant) [^3] | o3-mini | 2025-11-14 | 0.927 ± 0.086 | 50.00 ± 0.00 | - |
 | [MLZero](https://github.com/autogluon/autogluon-assistant) | o3-mini | 2025-11-14 | 0.926 ± 0.088 | 50.00 ± 0.00 | - |
@@ -31,7 +31,7 @@ The table below summarizes the tabular competition rankings for the Low complexi
 | [Neo](https://heyneo.so/) multi-agent | undisclosed | 2025-07-28 | 0.723 ± 0.483 | 50.00 ± 0.00 | - |
 | [InternAgent](https://github.com/Alpha-Innovator/InternAgent/) | deepseek-r1 | 2025-09-12 | 0.711 ± 0.518 | 50.00 ± 0.00 | - |
 | [ML-Master](https://github.com/zeroxleo/ML-Master) | deepseek-r1 | 2025-06-17 | 0.687 ± 0.600 | 41.67 ± 8.33 | - |
-| [LoongFlow](https://github.com/baidu-baige/LoongFlow) | Gemini-3-Flash-Preview | 2026-02-09 | 0.505 ± 0.583 | 50.00 ± 0.00[^2] | - |
+| [LoongFlow](https://github.com/baidu-baige/LoongFlow) | Gemini-3-Flash-Preview | 2026-02-09 | 0.505 ± 0.583 | 50.00 ± 0.00[^2] | [✓](https://github.com/openai/mle-bench/pull/119) |
 | [R&D-Agent](https://github.com/microsoft/RD-Agent) | gpt-5 | 2025-09-26 | 0.497 ± 0.574 | 50.00 ± 0.00 | - |
 | [Leeroo](https://github.com/Leeroo-AI/kapso)| Gemini-3-Pro-Preview[^4] | 2025-12-07 | 0.495 ± 0.572 |  50.00 ± 0.00[^2] | - |
 | OpenHands | gpt-4o-2024-08-06 | 2024-10-08 | 0.342 ± 0.605 | 41.67 ± 8.33 | - |
@@ -71,7 +71,7 @@ The table below shows the overall Low split leaderboard for all competition cate
 | [PiEvolve](https://github.com/FractalAIResearchLabs/PiEvolve)<br>(Fractal AI Research) 24 hrs | Gemini-3-Pro-Preview[^4] | 2026-01-05 | 0.968 ± 0.140 | 80.30 ± 1.52[^2] | - |
 | [MLEvolve](https://github.com/InternScience/MLEvolve) | Gemini-3-Pro-Preview | 2026-02-14 | 0.963 ± 0.155 | 80.30 ± 1.52 | - |
 | [PiEvolve](https://github.com/FractalAIResearchLabs/PiEvolve)<br>(Fractal AI Research) 12 hrs | Gemini-3-Pro-Preview[^4] | 2026-01-05 | 0.956 ± 0.142 | 45.61 ± 0.88[^2] | - |
-| [Disarray](https://disarray.ai) | Ensemble (Claude-Opus-4.5, Claude-Sonnet-4.5, GPT-5.2-Codex, Gemini-3-Pro-Preview) | 2026-02-03 | 0.955 ± 0.130 | 90.01 ± 0.00 | ✓ |
+| [Disarray](https://disarray.ai) | Ensemble (Claude-Opus-4.5, Claude-Sonnet-4.5, GPT-5.2-Codex, Gemini-3-Pro-Preview) | 2026-02-03 | 0.955 ± 0.130 | 90.01 ± 0.00 | [✓](https://github.com/openai/mle-bench/pull/118) |
 | [Famou-Agent](https://github.com/baidubce/FM-Agent) | Gemini-2.5-Pro | 2025-10-10 | 0.950 ± 0.132 | 75.76 ± 1.52 | - |
 | [CAIR](https://research.google/teams/cloud-ai-research/) MLE-STAR-Pro-1.5  | Gemini-2.5-Pro | 2025-11-25 | 0.940 ± 0.149 | 68.18 ± 2.62 | - |
 | [ML-Master 2.0](https://github.com/sjtu-sai-agents/ML-Master) | Deepseek-V3.2-Speciale | 2025-12-16 | 0.939 ± 0.133 | 75.76 ± 1.51 | - |
@@ -84,7 +84,7 @@ The table below shows the overall Low split leaderboard for all competition cate
 | [AIDE](https://github.com/wecoai/aideml) | o1-preview | 2024-10-08 | 0.856 ± 0.236 | 35.91 ± 1.86 | - |
 | [R&D-Agent](https://github.com/microsoft/RD-Agent) | o3 + GPT-4.1 | 2025-08-15 | 0.837 ± 0.321 | 51.52 ± 4.01 | - |
 | [CAIR](https://research.google/teams/cloud-ai-research/) MLE-STAR-Pro | Gemini-2.5-Pro | 2025-11-03 | 0.822 ± 0.411 | 66.67 ± 1.52 | - |
-| [LoongFlow](https://github.com/baidu-baige/LoongFlow) | Gemini-3-Flash-Preview | 2026-02-09 | 0.752 ± 0.428 | 77.27 ± 0.0[^2] | - |
+| [LoongFlow](https://github.com/baidu-baige/LoongFlow) | Gemini-3-Flash-Preview | 2026-02-09 | 0.752 ± 0.428 | 77.27 ± 0.0[^2] | [✓](https://github.com/openai/mle-bench/pull/119) |
 | [R&D-Agent](https://github.com/microsoft/RD-Agent) | gpt-5 | 2025-09-26 | 0.746 ± 0.428 | 68.18 ± 2.62 | - |
 | [Leeroo](https://github.com/Leeroo-AI/kapso) | Gemini-3-Pro-Preview[^4] | 2025-12-07 | 0.716 ± 0.452 |  68.18 ± 2.62[^2] | - |
 | OpenHands | gpt-4o-2024-08-06 | 2024-10-08 | 0.342 ± 0.605 | 41.67 ± 8.33 | - |
@@ -305,6 +305,10 @@ If you wish to make a submission to v1 in the meantime, please still include
 the following competitions in your overall scores. The known issues are
 catalogued below:
 
+- **tensorflow2-question-answering**:
+  - The `validate_submission` function in `grade.py` fails on this competition
+    because the answer file is `test.jsonl` instead of `test.csv`.
+    [#134](https://github.com/openai/mle-bench/issues/134)
 - **tensorflow-speech-recognition-challenge**:
   - The prepare.py script incorrectly prepares the test set such that there is a
     much larger range of test labels than there should be.
@@ -316,6 +320,14 @@ catalogued below:
 - **ranzcr-clip-catheter-line-classification**: The prepare.py script results in
   missing columns in the sample submission.
   [#30](https://github.com/openai/mle-bench/issues/30)
+- **dog-breed-identification**: The MLE-bench test split is created by holding
+  out images from a publicly labeled source corpus derived from the Stanford
+  Dogs Dataset, which agents may discover and leverage.
+  [#128](https://github.com/openai/mle-bench/issues/128)
+- **invasive-species-monitoring**: The prepare.py script archives the prepared
+  `train/` and `test/` directories incorrectly, so `train.7z` and `test.7z`
+  can be missing their image contents in the prepared public dataset.
+  [#122](https://github.com/openai/mle-bench/issues/122)
 - **tabular-playground-series-dec-2021**: The leaderboard is crowded -- very
   little difference between the top score and the median score.
 - **tabular-playground-series-may-2022**: The leaderboard is crowded -- very
