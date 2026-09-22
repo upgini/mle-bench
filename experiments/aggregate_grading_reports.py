@@ -195,6 +195,117 @@ def average_metrics_across_seeds(
     )
 
 
+def _competition_report_from_dict(report: dict) -> CompetitionReport:
+    return CompetitionReport(
+        competition_id=str(report["competition_id"]),
+        gold_medal=bool(report["gold_medal"]),
+        silver_medal=bool(report["silver_medal"]),
+        bronze_medal=bool(report["bronze_medal"]),
+        above_median=bool(report["above_median"]),
+        submission_exists=bool(report["submission_exists"]),
+        valid_submission=bool(report["valid_submission"]),
+    )
+
+
+def reports_repeat_competitions(report_paths: list[str], competition_ids: list[str]) -> bool:
+    """True when one grading report lists the same competition more than once.
+
+    The original AIDE reports store several seeds in a single file that way.
+    Later submissions use one row per competition per run group.
+    """
+    wanted = set(competition_ids)
+    for report_path in report_paths:
+        seen: set[str] = set()
+        with open(report_path, "r") as f:
+            grading_report = json.load(f)
+        for report in grading_report["competition_reports"]:
+            competition_id = str(report["competition_id"])
+            if competition_id not in wanted:
+                continue
+            if competition_id in seen:
+                return True
+            seen.add(competition_id)
+    return False
+
+
+def _any_medal_metrics_close(left: AggregateMetrics, right: AggregateMetrics) -> bool:
+    left_metric = left.metrics["any_medal_percentage"]
+    right_metric = right.metrics["any_medal_percentage"]
+    return abs(left_metric.mean - right_metric.mean) < 1e-9 and abs(
+        left_metric.standard_error - right_metric.standard_error
+    ) < 1e-9
+
+
+def aggregate_any_medal(
+    report_paths: list[str], competition_ids: list[str]
+) -> tuple[AggregateMetrics, bool]:
+    """Return any-medal metrics and whether they depend on failing-score padding.
+
+    Repeated rows inside one file are treated as seeds, matching the original
+    reports. Otherwise each file is one seed, and a competition missing from
+    that file is a failing score. That is how OpenAI pads incomplete seeds on
+    the Low leaderboard. The flag is true only when those failing scores change
+    the published mean or standard error.
+    """
+    if not report_paths:
+        raise ValueError("No grading reports provided.")
+    if not competition_ids:
+        raise ValueError("No competitions provided.")
+
+    if reports_repeat_competitions(report_paths, competition_ids):
+        try:
+            metrics = main(
+                report_paths,
+                -1,
+                "low",
+                False,
+                verbose=False,
+                competition_ids=competition_ids,
+            )
+        except ValueError:
+            metrics = main(
+                report_paths,
+                -1,
+                "low",
+                True,
+                verbose=False,
+                competition_ids=competition_ids,
+            )
+            return metrics, True
+        return metrics, False
+
+    wanted = set(competition_ids)
+    seeds: list[list[CompetitionReport]] = []
+    complete_seeds: list[list[CompetitionReport]] = []
+    for report_path in report_paths:
+        with open(report_path, "r") as f:
+            grading_report = json.load(f)
+        by_id: dict[str, CompetitionReport] = {}
+        for report in grading_report["competition_reports"]:
+            competition_id = str(report["competition_id"])
+            if competition_id in wanted and competition_id not in by_id:
+                by_id[competition_id] = _competition_report_from_dict(report)
+        seed = [
+            by_id[competition_id] if competition_id in by_id else zero_report(competition_id)
+            for competition_id in competition_ids
+        ]
+        seeds.append(seed)
+        if len(by_id) == len(competition_ids):
+            complete_seeds.append(seed)
+
+    padded_metrics = average_metrics_across_seeds(
+        [calculate_metrics_for_a_seed(seed) for seed in seeds],
+        len(competition_ids),
+    )
+    if not complete_seeds:
+        return padded_metrics, True
+    complete_metrics = average_metrics_across_seeds(
+        [calculate_metrics_for_a_seed(seed) for seed in complete_seeds],
+        len(competition_ids),
+    )
+    return padded_metrics, not _any_medal_metrics_close(padded_metrics, complete_metrics)
+
+
 def get_competition_reports(grading_reports: list[str]) -> list[CompetitionReport]:
     all_reports: list[CompetitionReport] = []
     for report_path in sorted(grading_reports):

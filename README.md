@@ -10,30 +10,34 @@ The table below summarizes the tabular competition rankings for the Low complexi
 
 | Agent | LLM(s) used | Date | [Normalized Score](#mean-normalized-score) | Any Medal (%) | Known leakage[^5] |
 | --- | --- | --- | --- | --- | --- |
+| [CAIR](https://research.google/teams/cloud-ai-research/) [MARS+](https://arxiv.org/pdf/2602.02660) | Gemini-3-Pro-Preview | 2026-02-17 | 0.967 ± 0.101 | 50.00 ± 0.00 | - |
+| [CAIR](https://research.google/teams/cloud-ai-research/) [MARS](https://arxiv.org/pdf/2602.02660) | Gemini-3-Pro-Preview | 2026-01-25 | 0.964 ± 0.105 | 50.00 ± 0.00 | - |
+| [Famou-Agent 2.0](https://github.com/baidubce/FM-Agent) | Gemini-3-Pro-Preview | 2026-02-23 | 0.958 ± 0.081 | 50.00 ± 0.00 | - |
 | [Famou-Agent](https://github.com/baidubce/FM-Agent) | Gemini-2.5-Pro | 2025-10-10 | 0.944 ± 0.103 | 50.00 ± 0.00 | - |
 | [PiEvolve](https://github.com/FractalAIResearchLabs/PiEvolve)<br>(Fractal AI Research) 24 hrs | Gemini-3-Pro-Preview[^4] | 2026-01-05 | 0.943 ± 0.123 | 50.00 ± 0.00[^2] | - |
 | [PiEvolve](https://github.com/FractalAIResearchLabs/PiEvolve)<br>(Fractal AI Research) 12 hrs | Gemini-3-Pro-Preview[^4] | 2026-01-05 | 0.938 ± 0.122 | 50.00 ± 0.00[^2] | - |
 | [Disarray](https://disarray.ai) | Ensemble (Claude-Opus-4.5, Claude-Sonnet-4.5, GPT-5.2-Codex, Gemini-3-Pro-Preview) | 2026-02-03 | 0.937 ± 0.138 | 75.00 ± 0.00 | [✓](https://github.com/openai/mle-bench/pull/118) |
-| [ML-Master 2.0](https://github.com/sjtu-sai-agents/ML-Master) | Deepseek-V3.2-Speciale | 2025-12-16 | 0.927 ± 0.086 | 50.00 ± 0.00 | - |
+| [ML-Master 2.0](https://github.com/sjtu-sai-agents/ML-Master) | Deepseek-V3.2-Speciale | 2025-12-16 | 0.927 ± 0.127 | 50.00 ± 0.00 | - |
 | [Upgini](https://github.com/upgini/upgini) + [MLZero](https://github.com/upgini/autogluon-assistant) [^3] | o3-mini | 2025-11-14 | 0.927 ± 0.086 | 50.00 ± 0.00 | - |
 | [MLZero](https://github.com/autogluon/autogluon-assistant) | o3-mini | 2025-11-14 | 0.926 ± 0.088 | 50.00 ± 0.00 | - |
 | [MLEvolve](https://github.com/InternScience/MLEvolve) | Gemini-3-Pro-Preview | 2026-02-14 | 0.906 ± 0.185 | 50.00 ± 0.00 | - |
-| [CAIR](https://research.google/teams/cloud-ai-research/) MLE-STAR-Pro-1.5  | Gemini-2.5-Pro | 2025-11-25 | 0.903 ± 0.130 | 50.00 ± 0.00 | - |
+| [CAIR](https://research.google/teams/cloud-ai-research/) MLE-STAR-Pro-1.5 | Gemini-2.5-Pro | 2025-11-25 | 0.903 ± 0.130 | 50.00 ± 0.00 | - |
 | [Famou-Agent 2.0](https://github.com/baidubce/FM-Agent) | Gemini-2.5-Pro | 2025-12-27 | 0.897 ± 0.162 | 50.00 ± 0.00 | - |
 | [Thesis](https://thesislabs.ai) | gpt-5-codex | 2025-11-10 | 0.891 ± 0.150 | 50.00 ± 0.00 | - |
 | [AIDE](https://github.com/wecoai/aideml) | claude-3-5-sonnet-20240620 | 2024-10-08 | 0.874 ± 0.142 | 41.67 ± 8.33 | - |
+| [AIBuildAI](https://github.com/aibuildai/AI-Build-AI) | Claude-Opus-4.6 | 2026-03-06 | 0.854 ± 0.164 | 50.00 ± 0.00 | - |
 | [R&D-Agent](https://github.com/microsoft/RD-Agent) | o1-preview | 2025-05-14 | 0.818 ± 0.306 | 50.00 ± 0.00 | - |
 | [AIDE](https://github.com/wecoai/aideml) | gpt-4o-2024-08-06 | 2024-10-08 | 0.808 ± 0.136 | 36.84 ± 2.79 | - |
 | [R&D-Agent](https://github.com/microsoft/RD-Agent) | o3 + GPT-4.1 | 2025-08-15 | 0.793 ± 0.371 | 50.00 ± 0.00 | - |
 | [AIDE](https://github.com/wecoai/aideml) | o1-preview | 2024-10-08 | 0.783 ± 0.421 | 40.00 ± 3.80 | - |
-| [Operand](https://operand.com) ensemble | gpt-5 (low verbosity/effort) | 2025-10-06 | 0.780 ± 0.282 | 50.00 ± 0.00[^2] | - |
+| [Operand](https://operand.com) ensemble | gpt-5 (low verbosity/effort) | 2025-10-06 | 0.780 ± 0.282 | 50.00 ± 0.00 | - |
 | [CAIR](https://research.google/teams/cloud-ai-research/) MLE-STAR-Pro | Gemini-2.5-Pro | 2025-11-03 | 0.727 ± 0.532 | 50.00 ± 0.00 | - |
 | [Neo](https://heyneo.so/) multi-agent | undisclosed | 2025-07-28 | 0.723 ± 0.483 | 50.00 ± 0.00 | - |
 | [InternAgent](https://github.com/Alpha-Innovator/InternAgent/) | deepseek-r1 | 2025-09-12 | 0.711 ± 0.518 | 50.00 ± 0.00 | - |
 | [ML-Master](https://github.com/zeroxleo/ML-Master) | deepseek-r1 | 2025-06-17 | 0.687 ± 0.600 | 41.67 ± 8.33 | - |
 | [LoongFlow](https://github.com/baidu-baige/LoongFlow) | Gemini-3-Flash-Preview | 2026-02-09 | 0.505 ± 0.583 | 50.00 ± 0.00[^2] | [✓](https://github.com/openai/mle-bench/pull/119) |
 | [R&D-Agent](https://github.com/microsoft/RD-Agent) | gpt-5 | 2025-09-26 | 0.497 ± 0.574 | 50.00 ± 0.00 | - |
-| [Leeroo](https://github.com/Leeroo-AI/kapso)| Gemini-3-Pro-Preview[^4] | 2025-12-07 | 0.495 ± 0.572 |  50.00 ± 0.00[^2] | - |
+| [Leeroo](https://github.com/Leeroo-AI/kapso) | Gemini-3-Pro-Preview[^4] | 2025-12-07 | 0.495 ± 0.572 | 50.00 ± 0.00[^2] | - |
 | OpenHands | gpt-4o-2024-08-06 | 2024-10-08 | 0.342 ± 0.605 | 41.67 ± 8.33 | - |
 | [AIDE](https://github.com/wecoai/aideml) | llama-3.1-405b-instruct | 2024-10-08 | 0.328 ± 1.032 | 35.00 ± 10.00 | - |
 | MLAB | gpt-4o-2024-08-06 | 2024-10-08 | -0.110 ± 0.392 | 15.63 ± 4.57 | - |
@@ -68,14 +72,18 @@ The table below shows the overall Low split leaderboard for all competition cate
 
 | Agent | LLM(s) used | Date | Normalized Score | Any Medal (%) | Known leakage[^5] |
 | --- | --- | --- | --- | --- | --- |
+| [CAIR](https://research.google/teams/cloud-ai-research/) [MARS+](https://arxiv.org/pdf/2602.02660) | Gemini-3-Pro-Preview | 2026-02-17 | 0.969 ± 0.139 | 78.79 ± 1.52 | - |
 | [PiEvolve](https://github.com/FractalAIResearchLabs/PiEvolve)<br>(Fractal AI Research) 24 hrs | Gemini-3-Pro-Preview[^4] | 2026-01-05 | 0.968 ± 0.140 | 80.30 ± 1.52[^2] | - |
+| [Famou-Agent 2.0](https://github.com/baidubce/FM-Agent) | Gemini-3-Pro-Preview | 2026-02-23 | 0.966 ± 0.139 | 80.30 ± 1.52 | - |
+| [CAIR](https://research.google/teams/cloud-ai-research/) [MARS](https://arxiv.org/pdf/2602.02660) | Gemini-3-Pro-Preview | 2026-01-25 | 0.964 ± 0.140 | 74.24 ± 1.52 | - |
 | [MLEvolve](https://github.com/InternScience/MLEvolve) | Gemini-3-Pro-Preview | 2026-02-14 | 0.963 ± 0.155 | 80.30 ± 1.52 | - |
-| [PiEvolve](https://github.com/FractalAIResearchLabs/PiEvolve)<br>(Fractal AI Research) 12 hrs | Gemini-3-Pro-Preview[^4] | 2026-01-05 | 0.956 ± 0.142 | 45.61 ± 0.88[^2] | - |
-| [Disarray](https://disarray.ai) | Ensemble (Claude-Opus-4.5, Claude-Sonnet-4.5, GPT-5.2-Codex, Gemini-3-Pro-Preview) | 2026-02-03 | 0.955 ± 0.130 | 90.01 ± 0.00 | [✓](https://github.com/openai/mle-bench/pull/118) |
-| [Famou-Agent](https://github.com/baidubce/FM-Agent) | Gemini-2.5-Pro | 2025-10-10 | 0.950 ± 0.132 | 75.76 ± 1.52 | - |
-| [CAIR](https://research.google/teams/cloud-ai-research/) MLE-STAR-Pro-1.5  | Gemini-2.5-Pro | 2025-11-25 | 0.940 ± 0.149 | 68.18 ± 2.62 | - |
-| [ML-Master 2.0](https://github.com/sjtu-sai-agents/ML-Master) | Deepseek-V3.2-Speciale | 2025-12-16 | 0.939 ± 0.133 | 75.76 ± 1.51 | - |
-| [FM Agent](https://github.com/baidubce/FM-Agent) | Gemini-2.5-Pro | 2025-10-10 | 0.909 ± 0.201 | 62.12 ± 1.52 | - |
+| [PiEvolve](https://github.com/FractalAIResearchLabs/PiEvolve)<br>(Fractal AI Research) 12 hrs | Gemini-3-Pro-Preview[^4] | 2026-01-05 | 0.956 ± 0.142 | 74.24 ± 3.03[^2] | - |
+| [Disarray](https://disarray.ai) | Ensemble (Claude-Opus-4.5, Claude-Sonnet-4.5, GPT-5.2-Codex, Gemini-3-Pro-Preview) | 2026-02-03 | 0.955 ± 0.130 | 90.91 ± 0.00 | [✓](https://github.com/openai/mle-bench/pull/118) |
+| [Famou-Agent 2.0](https://github.com/baidubce/FM-Agent) | Gemini-2.5-Pro | 2025-12-27 | 0.950 ± 0.132 | 75.76 ± 1.52 | - |
+| [AIBuildAI](https://github.com/aibuildai/AI-Build-AI) | Claude-Opus-4.6 | 2026-03-06 | 0.947 ± 0.128 | 77.27 ± 0.00 | - |
+| [CAIR](https://research.google/teams/cloud-ai-research/) MLE-STAR-Pro-1.5 | Gemini-2.5-Pro | 2025-11-25 | 0.940 ± 0.149 | 68.18 ± 2.62 | - |
+| [ML-Master 2.0](https://github.com/sjtu-sai-agents/ML-Master) | Deepseek-V3.2-Speciale | 2025-12-16 | 0.939 ± 0.133 | 75.76 ± 1.52 | - |
+| [Famou-Agent](https://github.com/baidubce/FM-Agent) | Gemini-2.5-Pro | 2025-10-10 | 0.909 ± 0.201 | 62.12 ± 1.52 | - |
 | [InternAgent](https://github.com/Alpha-Innovator/InternAgent/) | deepseek-r1 | 2025-09-12 | 0.893 ± 0.264 | 62.12 ± 3.03 | - |
 | [Thesis](https://thesislabs.ai) | gpt-5-codex | 2025-11-10 | 0.886 ± 0.218 | 65.15 ± 1.52 | - |
 | [Operand](https://operand.com) ensemble | gpt-5 (low verbosity/effort) | 2025-10-06 | 0.883 ± 0.194 | 63.64 ± 0.00 | - |
@@ -84,17 +92,15 @@ The table below shows the overall Low split leaderboard for all competition cate
 | [AIDE](https://github.com/wecoai/aideml) | o1-preview | 2024-10-08 | 0.856 ± 0.236 | 35.91 ± 1.86 | - |
 | [R&D-Agent](https://github.com/microsoft/RD-Agent) | o3 + GPT-4.1 | 2025-08-15 | 0.837 ± 0.321 | 51.52 ± 4.01 | - |
 | [CAIR](https://research.google/teams/cloud-ai-research/) MLE-STAR-Pro | Gemini-2.5-Pro | 2025-11-03 | 0.822 ± 0.411 | 66.67 ± 1.52 | - |
-| [LoongFlow](https://github.com/baidu-baige/LoongFlow) | Gemini-3-Flash-Preview | 2026-02-09 | 0.752 ± 0.428 | 77.27 ± 0.0[^2] | [✓](https://github.com/openai/mle-bench/pull/119) |
+| [LoongFlow](https://github.com/baidu-baige/LoongFlow) | Gemini-3-Flash-Preview | 2026-02-09 | 0.752 ± 0.433 | 77.27 ± 0.00[^2] | [✓](https://github.com/openai/mle-bench/pull/119) |
 | [R&D-Agent](https://github.com/microsoft/RD-Agent) | gpt-5 | 2025-09-26 | 0.746 ± 0.428 | 68.18 ± 2.62 | - |
-| [Leeroo](https://github.com/Leeroo-AI/kapso) | Gemini-3-Pro-Preview[^4] | 2025-12-07 | 0.716 ± 0.452 |  68.18 ± 2.62[^2] | - |
-| OpenHands | gpt-4o-2024-08-06 | 2024-10-08 | 0.342 ± 0.605 | 41.67 ± 8.33 | - |
+| [Leeroo](https://github.com/Leeroo-AI/kapso) | Gemini-3-Pro-Preview[^4] | 2025-12-07 | 0.716 ± 0.452 | 68.18 ± 2.62[^2] | - |
 | [Neo](https://heyneo.so/) multi-agent | undisclosed | 2025-07-28 | 0.699 ± 0.382 | 48.48 ± 1.52 | - |
 | [AIDE](https://github.com/wecoai/aideml) | gpt-4o-2024-08-06 | 2024-10-08 | 0.661 ± 0.334 | 18.55 ± 1.26 | - |
 | [AIDE](https://github.com/wecoai/aideml) | claude-3-5-sonnet-20240620 | 2024-10-08 | 0.505 ± 0.584 | 19.70 ± 1.52 | - |
 | OpenHands | gpt-4o-2024-08-06 | 2024-10-08 | 0.430 ± 0.392 | 12.12 ± 1.52 | - |
 | MLAB | gpt-4o-2024-08-06 | 2024-10-08 | 0.299 ± 0.426 | 4.55 ± 0.86 | - |
 | [AIDE](https://github.com/wecoai/aideml) | llama-3.1-405b-instruct | 2024-10-08 | 0.276 ± 0.541 | 10.23 ± 1.14 | - |
-
 
 ### Producing Medal Scores for the Leaderboard
 

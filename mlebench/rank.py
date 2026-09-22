@@ -145,48 +145,37 @@ def get_competition_results(
 def get_any_medal_results(
     experiment_groups: pd.DataFrame, split: str, competition_ids: list[str] = None
 ) -> pd.DataFrame:
-    from experiments.aggregate_grading_reports import grading_reports_from_experiment
-    from experiments.aggregate_grading_reports import main as aggregate_grading_reports_main
+    from experiments.aggregate_grading_reports import (
+        aggregate_any_medal,
+        grading_reports_from_experiment,
+        load_competition_ids,
+    )
 
     results = []
+
+    if competition_ids is None:
+        competition_ids = load_competition_ids(split)
 
     experiment_ids = experiment_groups["experiment_id"].unique()
     for experiment_id in experiment_ids:
         reports = grading_reports_from_experiment(experiment_id)
         try:
-            metrics = aggregate_grading_reports_main(
-                reports,
-                -1,
-                split,
-                pad_missing=False,
-                verbose=False,
-                competition_ids=competition_ids,
-            )
+            metrics, medal_padded = aggregate_any_medal(reports, competition_ids)
         except ValueError as e:
+            logger.error(f"Not including results for experiment {experiment_id}: {e}")
+            continue
+        if medal_padded:
             logger.warning(
-                f"Error calculating any medal results for experiment {experiment_id}: {e}"
+                f"Any-medal score for experiment {experiment_id} depends on padding "
+                "incomplete seeds with failing scores"
             )
-            try:
-                logger.warning(
-                    f"Calculating any medal results for experiment {experiment_id} with padding"
-                )
-                metrics = aggregate_grading_reports_main(
-                    reports,
-                    -1,
-                    split,
-                    pad_missing=True,
-                    verbose=False,
-                    competition_ids=competition_ids,
-                )
-            except ValueError as e:
-                logger.error(f"Not including results for experiment {experiment_id}: {e}")
-                continue
 
         results.append(
             {
                 "experiment_id": experiment_id,
                 "mean_medal_pct": metrics.metrics["any_medal_percentage"].mean,
                 "sem_medal_pct": metrics.metrics["any_medal_percentage"].standard_error,
+                "medal_padded": medal_padded,
             }
         )
 
